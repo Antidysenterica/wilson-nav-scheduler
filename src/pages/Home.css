@@ -1,0 +1,69 @@
+.home-container {
+  min-height: 100vh;
+  background-color: #dceef5;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-card {
+  width: 500px;
+  background: white;
+
+  padding: 40px;
+
+  border-radius: 10px;
+
+  text-align: center;
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  width: 150px;
+  margin-bottom: 10px;
+}
+
+.hero-card h1 {
+  color: #173f7a;
+  margin-bottom: 10px;
+}
+
+.hero-card h3 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.hero-card p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.map-btn {
+  background-color: #17a2c8;
+  color: white;
+
+  border: none;
+  padding: 10px 20px;
+
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-btn {
+  background-color: #f0c419;
+  color: white;
+
+  border: none;
+  padding: 10px 20px;
+
+  border-radius: 5px;
+  cursor: pointer;
+}
