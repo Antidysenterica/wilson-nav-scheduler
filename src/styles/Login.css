@@ -1,0 +1,338 @@
+:root {
+  --page-bg: #dff3fa;
+  --ink: #20242c;
+  --muted: #7b848f;
+  --line: #d8d2c8;
+  --teal: #2aa3bb;
+  --navy: #153f78;
+  --cream: #fff6dc;
+  --blue-note: #d9e7f0;
+  --gold-note: #fff0bd;
+  --card-shadow: 0 20px 45px rgba(22, 59, 78, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: var(--page-bg);
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app-root {
+  min-height: 100vh;
+}
+
+.loading-card {
+  width: min(90vw, 360px);
+  margin: 20vh auto 0;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #ffffff;
+  color: var(--muted);
+  text-align: center;
+}
+
+.screen {
+  min-height: 100vh;
+  background: var(--page-bg);
+}
+
+.login-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+}
+
+.login-wrap {
+  width: min(100%, 492px);
+}
+
+.brand-lockup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px 2px;
+}
+
+.brand-lockup img {
+  width: 56px;
+  height: 42px;
+  object-fit: contain;
+}
+
+.brand-lockup span {
+  color: var(--navy);
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.card {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #ffffff;
+  box-shadow: var(--card-shadow);
+}
+
+.login-card {
+  padding: 46px 36px 44px;
+}
+
+.login-card h1,
+.create-card h1,
+.permissions-card h2 {
+  margin: 0;
+  color: var(--ink);
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.login-card h1 {
+  color: #000000;
+  font-size: 29px;
+  line-height: 1.15;
+}
+
+.login-card .subtitle {
+  margin: 8px 0 31px;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.field label {
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.field input {
+  width: 100%;
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #ffffff;
+  color: #6f7882;
+  padding: 0 12px;
+  outline: none;
+  box-shadow: inset 0 0 0 1px rgba(216, 210, 200, 0.28);
+}
+
+.field input:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(42, 163, 187, 0.16);
+}
+
+.login-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-top: 31px;
+}
+
+.primary-btn,
+.secondary-btn {
+  height: 41px;
+  border-radius: 7px;
+  font-weight: 800;
+}
+
+.primary-btn {
+  border: 1px solid var(--teal);
+  background: var(--teal);
+  color: #ffffff;
+}
+
+.secondary-btn {
+  border: 1px solid var(--line);
+  background: #ffffff;
+  color: #242424;
+}
+
+.register-screen {
+  display: grid;
+  grid-template-columns: minmax(420px, 562px) minmax(360px, 472px);
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  padding: 49px 28px;
+}
+
+.create-card {
+  min-height: 616px;
+  padding: 56px 44px 45px;
+}
+
+.create-card h1 {
+  margin-bottom: 30px;
+  font-size: 30px;
+  line-height: 1.15;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 28px;
+}
+
+.form-grid .field-wide {
+  grid-column: 1 / -1;
+}
+
+.create-card .field {
+  margin-bottom: 19px;
+}
+
+.section-title {
+  margin: 15px 0 6px;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.account-tabs {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+  width: 100%;
+  min-height: 38px;
+  margin-bottom: 20px;
+  padding: 4px 9px;
+  border-radius: 6px;
+  background: var(--cream);
+}
+
+.account-tabs button {
+  min-width: 0;
+  height: 28px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: transparent;
+  color: #6e747b;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.account-tabs button.active {
+  border-color: var(--line);
+  background: #ffffff;
+  color: var(--ink);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.register-btn {
+  width: 100%;
+  height: 40px;
+  margin-top: 0;
+  font-size: 17px;
+}
+
+.permissions-card {
+  min-height: 556px;
+  padding: 84px 54px;
+}
+
+.permissions-card h2 {
+  margin-bottom: 24px;
+  font-size: 23px;
+}
+
+.permission-list {
+  display: grid;
+  gap: 30px;
+}
+
+.permission-note {
+  min-height: 82px;
+  border-radius: 6px;
+  padding: 16px 20px 14px;
+}
+
+.permission-note.blue {
+  background: var(--blue-note);
+}
+
+.permission-note.gold {
+  background: var(--gold-note);
+}
+
+.permission-note h3 {
+  margin: 0 0 4px;
+  font-size: 19px;
+  line-height: 1.1;
+  font-weight: 800;
+}
+
+.permission-note p {
+  margin: 0;
+  color: #7b848f;
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.permission-note:not(.selected) {
+  filter: saturate(0.92);
+}
+
+@media (max-width: 940px) {
+  .register-screen {
+    grid-template-columns: minmax(0, 562px);
+    align-content: start;
+    padding: 32px 18px;
+  }
+
+  .permissions-card {
+    min-height: 0;
+    padding: 42px 44px;
+  }
+}
+
+@media (max-width: 600px) {
+  .login-screen {
+    padding: 30px 16px;
+  }
+
+  .login-card,
+  .create-card,
+  .permissions-card {
+    padding: 32px 24px;
+  }
+
+  .create-card {
+    min-height: 0;
+  }
+
+  .form-grid,
+  .login-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .account-tabs {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .account-tabs button:last-child {
+    grid-column: 1 / -1;
+  }
+}
