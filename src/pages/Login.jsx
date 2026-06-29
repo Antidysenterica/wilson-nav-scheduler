@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "../styles/Login.css";
 import logoPath from "../assets/logo-icon.png";
 
 const accountTypes = [
