@@ -1,6 +1,8 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function LandingPage() {
+  const navigate = useNavigate();
+  
   return (
     <div className="home-container">
       <div className="hero-card">
@@ -23,18 +25,14 @@ function LandingPage() {
           for Ateneo de Naga University.
         </p>
 
-        <div className="button-group">
-          <Link to="/map">
-            <button className="map-btn">
-              View Campus Map
-            </button>
-          </Link>
+        <div className="button-group" onClick={() => navigate("/map")}>
+          <button className="map-btn">
+            View Campus Map
+          </button>
 
-          <Link to="/login">
-            <button className="login-btn">
-              Login
-            </button>
-          </Link>
+          <button className="login-btn" onClick={() => navigate("/login")}>
+            Login
+          </button>
         </div>
 
       </div>
