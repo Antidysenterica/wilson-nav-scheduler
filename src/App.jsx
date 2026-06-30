@@ -1,3 +1,5 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 // Landing Page
 import LandingPage from "./pages/LandingPage";
 
@@ -11,7 +13,7 @@ import Profile from "./pages/Profile";
 import TimeSlotEdit from "./pages/TimeSlotEdit";
 
 // Components
-// import Navbar from "../components/Navbar";
+import Navbar from "./components/Navbar";
 
 
 function App() {
