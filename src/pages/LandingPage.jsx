@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function LandingPage() {
   const navigate = useNavigate();
@@ -26,13 +26,13 @@ function LandingPage() {
         </p>
 
         <div className="button-group" onClick={() => navigate("/map")}>
-          <button className="map-btn">
-            View Campus Map
-          </button>
+          <Link to="/map" className="map-btn">
+            Campus Map
+          </Link>
 
-          <button className="login-btn" onClick={() => navigate("/login")}>
+          <Link to="/login" className="login-btn">
             Login
-          </button>
+          </Link>
         </div>
 
       </div>
