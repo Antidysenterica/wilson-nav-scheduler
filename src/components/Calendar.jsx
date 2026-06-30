@@ -1,6 +1,6 @@
 import '../styles/Calendar.css'
 import { useState } from 'react'
-import { availableSchedules } from '../data/schedules.js'
+import { availableSchedules } from './dummyschedules.js'
 
 function Calendar({ selectedDate, onDateSelect }) {
 
