@@ -1,19 +1,32 @@
-// Fix this later on
+// Landing Page
+import LandingPage from "./pages/LandingPage";
+
+// Page
+import About from "./pages/About";
+import Appointment from "./pages/Appointment";
+import Login from "./pages/Login";
+import ManageAppointments from "./pages/ManageAppointments";
+import Map from "./pages/Map";
+import Profile from "./pages/Profile";
+import TimeSlotEdit from "./pages/TimeSlotEdit";
+
+// Components
 import Navbar from "./components/Navbar";
-import Map from "./pages/Home";
-import Login from "./pages/Home";
-import Appointment from "./pages/Home";
-import Home from "./pages/Home";
+
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Change Login to Landing Page later on (this is the one you will see if you want to log in or just want to view the map*/}
-        <Route path="/" element={<Login />} />\
+        <Route path="/" element={<LandingPage />} />
         
-        <Route path="/Home" element={<Home />} />
+        <Route path="/About" element={<About />} />
         <Route path="/Appointment" element={<Appointment />} />
+        <Route path="/Login" element={<Login />} />
+        <Route path="/ManageAppointments" element={<ManageAppointments />} />
+        <Route path="/Map" element={<Map />} />
+        <Route path="/Profile" element={<Profile />} />
+        <Route path="/TimeSlotEdit" element={<TimeSlotEdit />} />
         
       </Routes>
     </BrowserRouter>
