@@ -5,7 +5,7 @@ import LandingPage from "./pages/LandingPage";
 import About from "./pages/About";
 import Appointment from "./pages/Appointment";
 import Login from "./pages/Login";
-import ManageAppointments from "./pages/ManageAppointments";
+import ManageAppointment from "./pages/ManageAppointment";
 import Map from "./pages/Map";
 import Profile from "./pages/Profile";
 import TimeSlotEdit from "./pages/TimeSlotEdit";
@@ -23,7 +23,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/appointment" element={<Appointment />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/manage-appointments" element={<ManageAppointments />} />
+        <Route path="/manage-appointment" element={<ManageAppointment />} />
         <Route path="/map" element={<Map />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/time-slot-edit" element={<TimeSlotEdit />} />
