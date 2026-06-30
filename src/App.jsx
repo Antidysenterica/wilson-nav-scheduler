@@ -11,7 +11,7 @@ import Profile from "./pages/Profile";
 import TimeSlotEdit from "./pages/TimeSlotEdit";
 
 // Components
-import Navbar from "./components/Navbar";
+// import Navbar from "../components/Navbar";
 
 
 function App() {
@@ -20,13 +20,13 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         
-        <Route path="/About" element={<About />} />
-        <Route path="/Appointment" element={<Appointment />} />
-        <Route path="/Login" element={<Login />} />
-        <Route path="/ManageAppointments" element={<ManageAppointments />} />
-        <Route path="/Map" element={<Map />} />
-        <Route path="/Profile" element={<Profile />} />
-        <Route path="/TimeSlotEdit" element={<TimeSlotEdit />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/appointment" element={<Appointment />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/manage-appointments" element={<ManageAppointments />} />
+        <Route path="/map" element={<Map />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/time-slot-edit" element={<TimeSlotEdit />} />
         
       </Routes>
     </BrowserRouter>
