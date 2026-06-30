@@ -1,3 +1,6 @@
+<img width="957" height="797" alt="logo-icon" src="https://github.com/Antidysenterica/wilson-nav-scheduler/src/assets/logo-icon.png" />
+
+
 # WILSON
 WILSON: Web Interface for Location, Scheduling, and Office Navigation
 
