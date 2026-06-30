@@ -4,7 +4,7 @@ function LandingPage() {
       <div className="hero-card">
 
         <img
-          src="..assets/logo-icon.png"
+          src="../assets/logo-icon.png"
           alt="WILSON Logo"
           className="logo"
         />
