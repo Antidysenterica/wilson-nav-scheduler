@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import "../styles/Login.css";
 import logoPath from "../assets/logo-icon.png";
@@ -93,9 +94,10 @@ export default function Login() {
             </label>
 
             <div className="login-actions">
-              <button className="primary-btn">
-                Log in
-              </button>
+                {/*Fix this later; "Log in" interaction must be on the button itself, not in the text itself*/}
+                <button className="primary-btn">
+                  <Link to="/map">Log in</Link>
+                </button>
 
               <button
                 className="secondary-btn"
