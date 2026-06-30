@@ -30,7 +30,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/time-slot-edit" element={<TimeSlotEdit />} />
 
-        <Route path="*" element={<NotFound />} />
+        {/*<Route path="*" element={<NotFound />} />*/}
         
       </Routes>
     </BrowserRouter>
