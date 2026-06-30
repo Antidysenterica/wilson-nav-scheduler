@@ -1,4 +1,4 @@
-<img width="957" height="797" alt="logo-icon" src="https://github.com/Antidysenterica/wilson-nav-scheduler/tree/main/src/assets/logo-icon.png" />
+<img width="957" height="797" alt="logo-icon" src="https://github.com/Antidysenterica/wilson-nav-scheduler/blob/main/src/assets/logo-icon.png" />
 
 
 # WILSON
