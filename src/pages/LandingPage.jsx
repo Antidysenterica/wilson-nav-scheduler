@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import logo from "./assets/logo-icon.png";
 
 function LandingPage() {  
   return (
@@ -6,7 +7,7 @@ function LandingPage() {
       <div className="hero-card">
 
         <img
-          src="./assets/logo-icon.png"
+          src={logo}
           alt="WILSON Logo"
           className="logo"
         />
