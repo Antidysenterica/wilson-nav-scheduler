@@ -10,6 +10,8 @@ function LandingPage() {
           src={logo}
           alt="WILSON Logo"
           className="logo"
+          width="200"
+          height="200"
         />
 
         <h1>WILSON</h1>
