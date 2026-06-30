@@ -1,5 +1,5 @@
 import '../styles/TimeSlotSelection.css'
-import { availableSchedules } from "../data/schedules.js";
+import { availableSchedules } from "./dummyschedules.js";
 import { useState } from 'react';
 
 function TimeSlotSelection({ selectedDate, onClose }) {
