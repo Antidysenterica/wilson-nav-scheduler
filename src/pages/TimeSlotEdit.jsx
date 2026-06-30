@@ -1,10 +1,9 @@
-function Map() {
+function TimeSlotEdit() {
   return (
     <div>
-      <h1>Edit Available Time Slot</h1>
-      <img src="/campus-map.png" alt="Map" width="600" />
+      <h1>Edit Time Slot</h1>
     </div>
   );
 }
 
-export default Map;
+export default TimeSlotEdit;
