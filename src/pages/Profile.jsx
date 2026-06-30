@@ -11,6 +11,7 @@ function Profile() {
       	<li><Link to="/profile">User Profile</Link></li>
       </ul>
       
+      <p><Link to="/about">About</Link></p>
       <p><Link to="/">Log Out</Link></p>
     </div>
   );
