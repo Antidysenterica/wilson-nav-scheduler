@@ -1,45 +1,56 @@
 import { Link } from "react-router-dom";
+import "../styles/Home.css";
 import logo from "../assets/logo-icon.png";
 
-function LandingPage() {  
+function LandingPage() {
   return (
     <div className="home-container">
-      <div className="hero-card">
 
-        <img
-          src={logo}
-          alt="WILSON Logo"
-          className="logo"
-          width="200"
-          height="200"
-        />
+      <div className="landing-content">
 
-        <h1>WILSON</h1>
+        <div className="hero-header">
+          <img
+            src={logo}
+            alt="Wilson Logo"
+            className="logo"
+          />
 
-        <h3>
-          Web Interface for Location,
-          Scheduling, and Office Navigation
-        </h3>
+          <h1>WILSON</h1>
+        </div>
 
-        <p>
-          A Campus Map and Appointment Scheduler
-          for Ateneo de Naga University.
-        </p>
+        <div className="hero-card">
 
-        <div className="button-group" onClick={() => navigate("/map")}>
-          <Link to="/map" className="map-btn">
-            Campus Map
-          </Link>
+          <h3>
+            Web Interface for Location,
+            <br />
+            Scheduling, and Office Navigation
+          </h3>
 
-          <Link to="/login" className="login-btn">
-            Login
-          </Link>
+          <p>
+            A Campus Map + Appointment Scheduler for Ateneo de Naga University.
+            This system is designed to help students, faculty, staff, and visitors
+            easily navigate university facilities and efficiently schedule
+            appointments with campus offices and personnel.
+          </p>
+
+          <div className="button-group">
+
+            <Link to="/map" className="map-btn">
+              View Campus Map
+            </Link>
+
+            <Link to="/login" className="login-btn">
+              Log in
+            </Link>
+
+          </div>
+
         </div>
 
       </div>
+
     </div>
   );
 }
 
 export default LandingPage;
-

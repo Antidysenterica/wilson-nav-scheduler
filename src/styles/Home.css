@@ -1,69 +1,175 @@
-.home-container {
-  min-height: 100vh;
-  background-color: #dceef5;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-.hero-card {
-  width: 500px;
-  background: white;
-
-  padding: 40px;
-
-  border-radius: 10px;
-
-  text-align: center;
-
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+body{
+    font-family:Arial, Helvetica, sans-serif;
 }
 
-.logo {
-  width: 150px;
-  margin-bottom: 10px;
+.home-container{
+    min-height:100vh;
+    background:#dceef8;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 
-.hero-card h1 {
-  color: #173f7a;
-  margin-bottom: 10px;
+.landing-content{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
 }
 
-.hero-card h3 {
-  color: #333;
-  margin-bottom: 10px;
+.hero-header{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    margin-bottom:18px;
 }
 
-.hero-card p {
-  color: #666;
-  margin-bottom: 20px;
+.logo{
+    width:165px;
+    height:auto;
+    margin-bottom:8px;
 }
 
-.button-group {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
+.hero-header h1{
+    color:#163f7b;
+    font-size:60px;
+    font-weight:800;
+    letter-spacing:1px;
 }
 
-.map-btn {
-  background-color: #17a2c8;
-  color: white;
+.hero-card{
+    width:550px;
 
-  border: none;
-  padding: 10px 20px;
+    background:#fff;
 
-  border-radius: 5px;
-  cursor: pointer;
+    border:1px solid #d8d8d8;
+    border-radius:8px;
+
+    padding:35px 55px;
+
+    text-align:center;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
 }
 
-.login-btn {
-  background-color: #f0c419;
-  color: white;
+.hero-card h3{
+    color:#2b2b2b;
 
-  border: none;
-  padding: 10px 20px;
+    font-size:22px;
+    line-height:1.35;
 
-  border-radius: 5px;
-  cursor: pointer;
+    font-weight:700;
+
+    margin-bottom:18px;
+}
+
+.hero-card p{
+    color:#7c7c7c;
+
+    font-size:15px;
+
+    line-height:1.6;
+
+    margin-bottom:30px;
+}
+
+.button-group{
+    display:flex;
+
+    justify-content:center;
+
+    gap:18px;
+}
+
+.button-group a{
+    text-decoration:none;
+}
+
+.map-btn,
+.login-btn{
+
+    width:170px;
+    height:46px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    border-radius:6px;
+
+    font-size:17px;
+    font-weight:700;
+
+    transition:.25s;
+}
+
+.map-btn{
+
+    background:#2aa3c7;
+    color:white;
+}
+
+.map-btn:hover{
+
+    background:#1b8eb0;
+}
+
+.login-btn{
+
+    background:#ffc107;
+    color:white;
+}
+
+.login-btn:hover{
+
+    background:#e0ab00;
+}
+
+@media(max-width:768px){
+
+.hero-card{
+
+width:90%;
+padding:28px;
+
+}
+
+.hero-header h1{
+
+font-size:48px;
+
+}
+
+.logo{
+
+width:135px;
+
+}
+
+.hero-card h3{
+
+font-size:20px;
+
+}
+
+.button-group{
+
+flex-direction:column;
+
+}
+
+.map-btn,
+.login-btn{
+
+width:100%;
+
+}
+
 }
