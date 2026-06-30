@@ -1,12 +1,15 @@
 import { Link } from "react-router-dom";
-// import { Outlet } from "react-router-dom";
-// import { useState } from 'react'
-// import Calendar from "../components/Calendar";
+import { Outlet } from "react-router-dom";
+import { useState } from 'react'
+import Calendar from "../components/Calendar";
+import TimeSlotSelection from "../components/TimeSlotSelection";
 
 function Appointment() {
   return (
     <div>
-      {/* <Calendar /> */}
+      <Calendar />
+      <TimeSlotSelection />
+      
       
       <h1>Book Appointment</h1>
 
@@ -28,7 +31,8 @@ function Appointment() {
         </button>
       </form>
       
-      {/* <Outlet /> */}
+      <Outlet />
+      <Outlet />
       
     </div>
   );
