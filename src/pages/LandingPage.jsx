@@ -1,10 +1,10 @@
-function Home() {
+function LandingPage() {
   return (
     <div className="home-container">
       <div className="hero-card">
 
         <img
-          src="/logo.png"
+          src="..assets/logo-icon.png"
           alt="WILSON Logo"
           className="logo"
         />
@@ -36,4 +36,5 @@ function Home() {
   );
 }
 
-export default Home;
+export default LandingPage;
+
