@@ -1,10 +1,12 @@
+import { Link } from "react-router-dom";
+
 function LandingPage() {
   return (
     <div className="home-container">
       <div className="hero-card">
 
         <img
-          src="../assets/logo-icon.png"
+          src="./assets/logo-icon.png"
           alt="WILSON Logo"
           className="logo"
         />
@@ -22,13 +24,17 @@ function LandingPage() {
         </p>
 
         <div className="button-group">
-          <button className="map-btn">
-            View Campus Map
-          </button>
+          <Link to="/map">
+            <button className="map-btn">
+              View Campus Map
+            </button>
+          </Link>
 
-          <button className="login-btn">
-            Login
-          </button>
+          <Link to="/login">
+            <button className="login-btn">
+              Login
+            </button>
+          </Link>
         </div>
 
       </div>
