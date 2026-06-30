@@ -1,5 +1,5 @@
 export const availableSchedules = {
-    "2026-06-18": [
+    "2026-07-11": [
         {
             startTime: "9:00 AM",
             endTime: "9:20 AM",
@@ -52,7 +52,7 @@ export const availableSchedules = {
         },
     ],
 
-    "2026-06-19": [
+    "2026-07-12": [
         {
             startTime: "1:00 PM",
             endTime: "1:20 PM",
@@ -65,7 +65,7 @@ export const availableSchedules = {
         }
     ],
 
-    "2026-06-20": [
+    "2026-07-13": [
         {
             startTime: "9:00 AM",
             endTime: "9:20 AM",
