@@ -7,3 +7,5 @@ WILSON: Web Interface for Location, Scheduling, and Office Navigation
 A Campus Map + Appointment Scheduler for Ateneo de Naga University 
 
 This system is designed to help students, faculty, staff, and visitors easily navigate university facilities and efficiently schedule appointments with campus offices and personnel. 
+
+Figma: https://www.figma.com/design/NzAeCfOzJqSJ0EehJNdTIp/WILSON?node-id=18-64&t=7WwiaZdyNdLKKMZo-1
