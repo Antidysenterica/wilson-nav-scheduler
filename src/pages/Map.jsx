@@ -204,7 +204,7 @@ function App() {
           {navItems.map((item) => {
             const Icon = item.icon;
             return (
-              <Link
+              <button
                 className={`nav-item ${activeNav === item.label ? "is-active" : ""}`}
                 key={item.label}
                 type="button"
@@ -212,7 +212,7 @@ function App() {
               >
                 <Icon size={18} aria-hidden="true" />
                 <span>{item.label}</span>
-              </Link>
+              </button>
             );
           })}
         </nav>
