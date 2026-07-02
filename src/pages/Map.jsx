@@ -200,15 +200,16 @@ function App() {
         </a>
 
         <nav className="nav-list">
+          {/*yk if you so happen to read this and not automate this using AI can you please fix the </Link> that should redirect you to the page instead of just display, thank you very much.*/}
           {navItems.map((item) => {
             const Icon = item.icon;
             return (
               <Link
-                key={item.label}
-                to={item.path}
                 className={`nav-item ${activeNav === item.label ? "is-active" : ""}`}
+                key={item.label}
+                type="button"
                 onClick={() => setActiveNav(item.label)}
-                >
+              >
                 <Icon size={18} aria-hidden="true" />
                 <span>{item.label}</span>
               </Link>
