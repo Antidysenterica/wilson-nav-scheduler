@@ -22,11 +22,11 @@ import {
 import campusLogo from "../assets/logo-icon.png";
 
 const navItems = [
-  { label: "Map", icon: MapPinned },
+  { label: "Map", icon: MapPinned, path: "/map" },
   { label: "Rooms", icon: DoorOpen },
-  { label: "Appointments", icon: CalendarCheck },
-  { label: "Manage", icon: Settings2 },
-  { label: "Account", icon: UserRound }
+  { label: "Appointments", icon: CalendarCheck, path: "/appointment" },
+  { label: "Manage", icon: Settings2, path: "/manage-appointment" },
+  { label: "Account", icon: UserRound, path: "/profile" }
 ];
 
 const buildings = [
