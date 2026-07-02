@@ -1,0 +1,89 @@
+.FacultyAppointments {
+    font-family: Intel, sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background-color: white;
+    padding: 20px;
+    pointer-events: auto;
+    border: 2px solid hsl(43, 17%, 84%);
+    border-radius: 5px;
+}
+
+.FacultyAppointments h1 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.AppointmentDetails {
+    background-color: hsl(40, 20%, 94%);
+    border: 1px solid hsl(42, 18%, 85%);
+    border-radius: 6px;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.AppointmentDetails p {
+    margin: 0;
+    font-size: 11px;
+}
+
+.AppointmentDetails p:first-child {
+    font-size: 12px;
+    font-weight: 600;
+    color: hsl(220, 4%, 46%);
+}
+
+.DecisionButtons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.RejectButton,
+.ApproveButton {
+    width: 50%;
+    height: 38px;
+    border-radius: 6px;
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.RejectButton {
+    background-color: hsl(14, 52%, 90%);
+    border: 1px solid hsl(359, 100%, 61%);
+}
+
+.ApproveButton {
+    background-color: hsl(180, 24%, 90%);
+    border: 1px solid hsl(183, 48%, 28%);
+    color: hsl(183, 48%, 28%);
+}
+
+.FacultyAppointments label {
+    font-size: 11px;
+}
+
+.FacultyAppointments input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid hsl(42, 18%, 85%);
+    border-radius: 6px;
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    box-sizing: border-box;
+}
+
+.SubmitButton {
+    padding: 10px 24px;
+    background-color: hsl(0, 0%, 100%);
+    border: 1px solid hsl(42, 18%, 85%);
+    border-radius: 6px;
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    cursor: pointer;
+}
