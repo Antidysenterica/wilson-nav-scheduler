@@ -20,11 +20,11 @@ import {
 import campusLogo from "../assets/logo-icon.png";
 
 const navItems = [
-  { label: "Map", icon: MapPinned, path: "/map" },
+  { label: "Map", icon: MapPinned },
   { label: "Rooms", icon: DoorOpen },
-  { label: "Appointments", icon: CalendarCheck, path: "/appointment" },
-  { label: "Manage", icon: Settings2, path: "/manage-appointment" },
-  { label: "Account", icon: UserRound, path: "/profile" }
+  { label: "Appointments", icon: CalendarCheck },
+  { label: "Manage", icon: Settings2 },
+  { label: "Account", icon: UserRound }
 ];
 
 const buildings = [
@@ -200,7 +200,6 @@ function App() {
         </a>
 
         <nav className="nav-list">
-          {/*yk if you so happen to read this and not automate this using AI can you please fix the </Link> that should redirect you to the page instead of just display, thank you very much.*/}
           {navItems.map((item) => {
             const Icon = item.icon;
             return (
