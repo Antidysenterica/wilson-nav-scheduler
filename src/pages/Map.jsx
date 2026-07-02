@@ -204,11 +204,11 @@ function App() {
             const Icon = item.icon;
             return (
               <Link
+                key={item.label}
+                to={item.path}
                 className={`nav-item ${activeNav === item.label ? "is-active" : ""}`}
-                key={item.label} to={item.path}
-                type="button"
                 onClick={() => setActiveNav(item.label)}
-              >
+                >
                 <Icon size={18} aria-hidden="true" />
                 <span>{item.label}</span>
               </Link>
