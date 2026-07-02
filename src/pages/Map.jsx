@@ -22,9 +22,9 @@ import campusLogo from "../assets/logo-icon.png";
 const navItems = [
   { label: "Map", icon: MapPinned, path: "/map" },
   { label: "Rooms", icon: DoorOpen },
-  { label: "Appointments", icon: CalendarCheck, path: "/appointment"  },
-  { label: "Manage", icon: Settings2, path: "/manage-appointment"  },
-  { label: "Account", icon: UserRound, path: "/profile"  }
+  { label: "Appointments", icon: CalendarCheck, path: "/appointment" },
+  { label: "Manage", icon: Settings2, path: "/manage-appointment" },
+  { label: "Account", icon: UserRound, path: "/profile" }
 ];
 
 const buildings = [
@@ -203,7 +203,7 @@ function App() {
           {navItems.map((item) => {
             const Icon = item.icon;
             return (
-              <button
+              <Link
                 className={`nav-item ${activeNav === item.label ? "is-active" : ""}`}
                 key={item.label}
                 type="button"
@@ -211,7 +211,7 @@ function App() {
               >
                 <Icon size={18} aria-hidden="true" />
                 <span>{item.label}</span>
-              </button>
+              </Link>
             );
           })}
         </nav>
