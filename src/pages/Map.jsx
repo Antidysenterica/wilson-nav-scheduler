@@ -205,7 +205,7 @@ function App() {
             return (
               <Link
                 className={`nav-item ${activeNav === item.label ? "is-active" : ""}`}
-                key={item.label}
+                key={item.label} to={item.path}
                 type="button"
                 onClick={() => setActiveNav(item.label)}
               >
