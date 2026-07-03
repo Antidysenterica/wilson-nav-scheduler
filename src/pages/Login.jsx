@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import "../styles/Login.css";
 import logoPath from "../assets/logo-icon.png";
+import DocumentTitle from "../hooks/DocumentTitle";
 
 const accountTypes = [
   "Guest",
@@ -59,6 +60,7 @@ export default function Login() {
     item.roles.includes(selectedAccount);
 
   if (screen === "login") {
+    DocumentTitle("Login");
     return (
       <main className="screen login-screen">
         <div className="login-wrap">
@@ -112,6 +114,7 @@ export default function Login() {
     );
   }
 
+  DocumentTitle("Register");
   return (
     <main className="screen register-screen">
       <section className="card create-card">

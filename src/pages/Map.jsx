@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from "react";
 import { Menu, User, MapPin } from "lucide-react";
-import "../styles/Map.css";
+import "../styles/Layout.css";
 import { Link } from "react-router-dom";
+import DocumentTitle from "../hooks/DocumentTitle";
 
 import {
   Bell,
@@ -158,7 +159,9 @@ const campusStats = [
   { label: "Appointments", value: "18" }
 ];
 
-function App() {
+function Map() {
+  DocumentTitle("Campus Map");
+
   const [activeNav, setActiveNav] = useState("Map");
   const [selectedId, setSelectedId] = useState("phelan");
   const [query, setQuery] = useState("");
@@ -441,4 +444,4 @@ function CampusCanvas({ buildings: campusBuildings, selectedId, onSelectBuilding
   );
 }
 
-export default App;
+export default Map;
