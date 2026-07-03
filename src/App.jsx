@@ -15,7 +15,6 @@ import TimeSlotEdit from "./pages/TimeSlotEdit";
 // Components
 import Navbar from "./components/Navbar";
 
-
 function App() {
   return (
     <BrowserRouter>
