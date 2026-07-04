@@ -12,11 +12,9 @@ router.post("/register", async (req, res) => {
       email,
       password,
       birthday,
-      school_id,
       role_id,
     } = req.body;
 
-    // Check if email already exists
     db.query(
       "SELECT * FROM USER WHERE email = ?",
       [email],
@@ -29,23 +27,36 @@ router.post("/register", async (req, res) => {
           });
         }
 
-        // Encrypt password
         const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Split full name
+        const names = full_name.trim().split(" ");
+
+        const first_name = names[0];
+        const last_name = names[names.length - 1];
+        const middle_name =
+          names.length > 2
+            ? names.slice(1, names.length - 1).join(" ")
+            : null;
 
         db.query(
           `INSERT INTO USER
-          (full_name,email,password,birthday,school_id,role_id)
-          VALUES (?,?,?,?,?,?)`,
+          (first_name,middle_name,last_name,email,password,birthday,role_id)
+          VALUES (?,?,?,?,?,?,?)`,
           [
-            full_name,
+            first_name,
+            middle_name,
+            last_name,
             email,
             hashedPassword,
             birthday,
-            school_id,
             role_id,
           ],
           (err) => {
-            if (err) return res.status(500).json(err);
+            if (err) {
+              console.log(err);
+              return res.status(500).json(err);
+            }
 
             res.status(201).json({
               message: "Registration Successful!",

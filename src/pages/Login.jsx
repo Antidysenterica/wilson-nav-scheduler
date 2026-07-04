@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios";
 import "../styles/Login.css";
 import logoPath from "../assets/logo-icon.png";
 
@@ -31,12 +32,11 @@ const permissions = [
 ];
 
 const initialForm = {
-  email: "student@gbox.adnu.edu.ph",
-  password: "password",
+  email: "",
+  password: "",
   fullName: "",
   registerEmail: "",
   birthday: "",
-  schoolId: "",
   newPassword: "",
   confirmPassword: "",
 };
@@ -47,12 +47,57 @@ export default function Login() {
   const [form, setForm] = useState(initialForm);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-    setForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+  const handleRegister = async () => {
+    if (
+      !form.fullName ||
+      !form.registerEmail ||
+      !form.birthday ||
+      !form.newPassword
+    ) {
+      alert("Please complete all fields.");
+      return;
+    }
+
+    if (form.newPassword !== form.confirmPassword) {
+      alert("Passwords do not match.");
+      return;
+    }
+
+    const roleMap = {
+      Guest: 1,
+      College: 2,
+      Graduate: 3,
+      Faculty: 4,
+      Staff: 5,
+    };
+
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/auth/register",
+        {
+          full_name: form.fullName,
+          email: form.registerEmail,
+          password: form.newPassword,
+          birthday: form.birthday,
+          role_id: roleMap[selectedAccount],
+        }
+      );
+
+      alert(res.data.message);
+
+      setForm(initialForm);
+      setSelectedAccount("Guest");
+      setScreen("login");
+    } catch (err) {
+      console.log(err.response?.data);
+      alert(err.response?.data?.message || "Registration failed.");
+    }
   };
 
   const isPermissionSelected = (item) =>
@@ -69,6 +114,7 @@ export default function Login() {
 
           <section className="card login-card">
             <h1>Welcome back</h1>
+
             <p className="subtitle">
               Sign in to open maps and appointments.
             </p>
@@ -94,10 +140,9 @@ export default function Login() {
             </label>
 
             <div className="login-actions">
-                {/*Fix this later; "Log in" interaction must be on the button itself, not in the text itself*/}
-                <button className="primary-btn">
-                  <Link to="/map">Log in</Link>
-                </button>
+              <button className="primary-btn">
+                <Link to="/map">Log in</Link>
+              </button>
 
               <button
                 className="secondary-btn"
@@ -112,7 +157,7 @@ export default function Login() {
     );
   }
 
-  return (
+    return (
     <main className="screen register-screen">
       <section className="card create-card">
         <h1>Create account</h1>
@@ -125,6 +170,7 @@ export default function Login() {
               name="fullName"
               value={form.fullName}
               onChange={handleChange}
+              placeholder="Juan Dela Cruz"
             />
           </label>
 
@@ -135,46 +181,39 @@ export default function Login() {
               name="registerEmail"
               value={form.registerEmail}
               onChange={handleChange}
+              placeholder="student@gbox.adnu.edu.ph"
             />
           </label>
 
-          <label className="field">
+          <label className="field field-wide">
             <span>Birthday</span>
             <input
-              type="text"
+              type="date"
               name="birthday"
               value={form.birthday}
               onChange={handleChange}
             />
           </label>
 
-          <label className="field">
-            <span>School ID</span>
-            <input
-              type="text"
-              name="schoolId"
-              value={form.schoolId}
-              onChange={handleChange}
-            />
-          </label>
-
-          <label className="field">
+          <label className="field field-wide">
             <span>Password</span>
             <input
               type="password"
               name="newPassword"
               value={form.newPassword}
               onChange={handleChange}
+              placeholder="Password"
             />
           </label>
 
-          <label className="field">
+          <label className="field field-wide">
             <span>Confirm Password</span>
             <input
               type="password"
               name="confirmPassword"
               value={form.confirmPassword}
               onChange={handleChange}
+              placeholder="Confirm Password"
             />
           </label>
         </div>
@@ -185,6 +224,7 @@ export default function Login() {
           {accountTypes.map((type) => (
             <button
               key={type}
+              type="button"
               className={selectedAccount === type ? "active" : ""}
               onClick={() => setSelectedAccount(type)}
             >
@@ -194,8 +234,9 @@ export default function Login() {
         </div>
 
         <button
+          type="button"
           className="primary-btn register-btn"
-          onClick={() => setScreen("login")}
+          onClick={handleRegister}
         >
           Register
         </button>
