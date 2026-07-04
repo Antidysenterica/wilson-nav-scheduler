@@ -5,6 +5,10 @@ import logo from "../assets/logo-icon.png";
 function LandingPage() {
   return (
     <div className="home-container">
+    
+     <article>
+      	<title>Homepage</title>
+     </article>
 
       <div className="landing-content">
 

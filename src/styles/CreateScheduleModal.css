@@ -1,0 +1,219 @@
+.CreateScheduleModal {
+    background-color: #ffffff;
+    color: #111111;
+    width: 300px;
+    border-radius: 5px;
+    padding: 20px;
+    pointer-events: auto;
+    border: 2px solid hsl(43, 17%, 84%);
+    font-family: "Inter", sans-serif;
+}
+
+.CreateScheduleHeader {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.CreateScheduleHeader h2 {
+    font-size: 16px;
+    font-family: "Inter", sans-serif;
+    font-weight: bold;
+    margin: 0;
+}
+
+.TimeSlotHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+    font-weight: bold;
+    color: #000000;
+}
+
+.TimeSlotHeader h3 {
+    margin: 0;
+    font-size: 11px;
+    font-weight: bold;
+    font-family: "Inter", sans-serif;
+}
+
+#addSlotButton {
+    border: none;
+    border-radius: 4px;
+    padding: 6px 10px;
+    color: hsl(210, 6%, 48%);
+    font-family: "Inter", sans-serif;
+    font-size: 9px;
+    width: 60px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.TimeSlots {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    min-height: 110px;
+    max-height: 160px;
+    padding-right: 8px;
+    margin: 8px 0 12px;
+}
+
+#CreateScheduleForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-family: "Inter", sans-serif;
+}
+
+#CreateScheduleForm label {
+    font-size: 9px;
+    font-family: "Inter", sans-serif;
+    font-weight: bold;
+}
+
+#CreateScheduleForm select,
+#CreateScheduleForm input {
+    width: 100%;
+    padding: 10px 10px 10px 12px;
+    height: 35px;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    color: #111111;
+    border: 1.5px solid hsl(43, 17%, 84%);
+    border-radius: 5px;
+    background-color: #ffffff;
+}
+
+#CreateScheduleForm select {
+    cursor: pointer;
+}
+
+#CreateScheduleForm select:focus,
+#CreateScheduleForm input:focus {
+    outline: none;
+    border-color: hsl(208, 80%, 23%);
+}
+
+#CreateScheduleForm input::placeholder {
+    font-size: 10px;
+    font-family: "Inter", sans-serif;
+    font-weight: bold;
+    color: #777777;
+}
+
+.FormButtons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.FormButtons button {
+    border: none;
+    border-radius: 6px;
+    padding: 10px 0;
+    width: 85%;
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.FormButtons button[type="submit"] {
+    background-color: hsl(192, 70%, 43%);
+}
+
+.FormButtons button[type="submit"]:hover {
+    background-color: hsl(197, 54%, 63%);
+}
+
+.FormButtons button[type="reset"] {
+    background-color: hsl(43, 17%, 90%);
+}
+
+.FormButtons button[type="reset"]:hover {
+    background-color: hsl(43, 17%, 84%);
+}
+
+.TimeSlots {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 250px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.TimeSlotRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.TimeSlotRow input[type="time"] {
+    flex: 1;
+    height: 35px;
+    padding: 0 10px;
+    border: 1.5px solid hsl(43, 17%, 84%);
+    border-radius: 5px;
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+.TimeSlotRow input[type="time"]:focus {
+    outline: none;
+    border-color: hsl(208, 80%, 23%);
+}
+
+.TimeSlotRow span {
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.TimeSlotDeleteButton {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: hsl(0, 65%, 45%);
+}
+
+#deleteSlotButton {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: none;
+    border-radius: 5px;
+    color: hsl(0, 0%, 45%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+#deleteSlotButton:hover {
+    background-color: hsla(0, 70%, 50%, 0.12);
+    color: hsl(0, 70%, 45%);
+}
+
+#deleteSlotButton:active {
+    transform: scale(0.92);
+}
+
+#deleteSlotButton svg {
+    font-size: 14px;
+}

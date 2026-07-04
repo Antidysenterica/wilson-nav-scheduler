@@ -1,0 +1,88 @@
+.Requests {
+    width: 380px;
+    height: 320px;
+    display: flex;
+    flex-direction: column;
+    font-family: "Inter", sans-serif;
+    background-color: white;
+    padding: 20px;
+    pointer-events: auto;
+    border: 2px solid hsl(43, 17%, 84%);
+    border-radius: 5px;
+}
+
+.RequestsTitle {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 12px 0;
+}
+
+.RequestsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    height: 154px;
+    overflow-y: auto;
+}
+
+.RequestCard {
+    width: 350px;
+    height: 46px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: hsl(40, 20%, 94%);
+    border: 1px solid hsl(42, 18%, 85%);
+    border-radius: 6px;
+    padding: 0 12px;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+.RequestDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.RoomName {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.RequestSchedule {
+    margin: 0;
+    font-size: 10px;
+    color: hsl(220, 4%, 46%);
+}
+
+.ReviewButton {
+    width: 82px;
+    height: 30px;
+    border: none;
+    border-radius: 6px;
+    background-color: hsl(0, 0%, 100%);
+    color: hsl(0, 0%, 0%);
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.ScheduleTitle {
+    margin: 20px 0 12px 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.EditScheduleButton {
+    width: 150px;
+    height: 38px;
+    background-color: hsl(0, 0%, 100%);
+    border: 1px solid hsl(42, 18%, 85%);
+    border-radius: 6px;
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    cursor: pointer;
+}
