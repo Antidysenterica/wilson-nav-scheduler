@@ -1,17 +1,20 @@
-const express = require("express");
-const cors = require("cors");
+const mysql = require("mysql2");
 
-const app = express();
-
-app.use(cors());
-app.use(express.json());
-
-const authRoutes = require("./routes/auth");
-
-app.use("/api/auth", authRoutes);
-
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+const db = mysql.createConnection({
+  host: process.env.DB_HOST || "localhost",
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASSWORD || "root",
+  database: process.env.DB_NAME || "wilson_db",
+  port: process.env.DB_PORT ? Number(process.env.DB_PORT) : undefined,
 });
+
+db.connect((err) => {
+  if (err) {
+    console.log("Database connection failed:", err);
+    return;
+  }
+
+  console.log("Connected to MySQL!");
+});
+
+module.exports = db;
