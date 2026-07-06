@@ -1,4 +1,5 @@
 const mysql = require("mysql2");
+const fs = require("fs");
 
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -6,6 +7,9 @@ const db = mysql.createConnection({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   port: process.env.DB_PORT,
+  ssl: {
+    ca: fs.readFileSync("../ca.pem")
+  }
 });
 
 db.connect((err) => {
