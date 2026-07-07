@@ -31,7 +31,7 @@ router.post("/register", async (req, res) => {
 
         db.query(
           `INSERT INTO USER
-            (fullname,email,password,birthday,role_id)
+            (full_name,email,password,birthday,role_id)
             VALUES (?,?,?,?,?)`,
           [
             full_name,
