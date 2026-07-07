@@ -29,24 +29,12 @@ router.post("/register", async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Split full name
-        const names = full_name.trim().split(" ");
-
-        const first_name = names[0];
-        const last_name = names[names.length - 1];
-        const middle_name =
-          names.length > 2
-            ? names.slice(1, names.length - 1).join(" ")
-            : null;
-
         db.query(
           `INSERT INTO USER
-          (first_name,middle_name,last_name,email,password,birthday,role_id)
-          VALUES (?,?,?,?,?,?,?)`,
+            (fullname,email,password,birthday,role_id)
+            VALUES (?,?,?,?,?)`,
           [
-            first_name,
-            middle_name,
-            last_name,
+            full_name,
             email,
             hashedPassword,
             birthday,
