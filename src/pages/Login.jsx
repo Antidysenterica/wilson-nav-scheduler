@@ -181,7 +181,7 @@ export default function Login() {
               name="registerEmail"
               value={form.registerEmail}
               onChange={handleChange}
-              placeholder="student@gbox.adnu.edu.ph"
+              placeholder="example@gbox.adnu.edu.ph or example@gmail.com"
             />
           </label>
 
