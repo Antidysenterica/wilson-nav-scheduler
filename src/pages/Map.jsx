@@ -218,7 +218,6 @@ function Map() {
                 type="button"
                 onClick={() => setActiveNav(item.label)}
                 >
-              >
                 <Icon size={18} aria-hidden="true" />
                 <span>{item.label}</span>
               </Link>
