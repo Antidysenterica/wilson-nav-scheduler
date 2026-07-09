@@ -115,7 +115,7 @@ export default function Login() {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        "https://wilson-nav-backend.onrender.com/api/auth/register",
         {
           full_name: form.fullName,
           email: form.registerEmail,
@@ -231,7 +231,7 @@ export default function Login() {
               name="registerEmail"
               value={form.registerEmail}
               onChange={handleChange}
-              placeholder="student@gbox.adnu.edu.ph"
+              placeholder="example@gbox.adnu.edu.ph or example@gmail.com"
             />
           </label>
 
