@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import "../styles/Login.css";
@@ -37,11 +37,14 @@ const initialForm = {
   fullName: "",
   registerEmail: "",
   birthday: "",
+  schoolId: "",
   newPassword: "",
   confirmPassword: "",
 };
 
 export default function Login() {
+  const navigate = useNavigate();
+
   const [screen, setScreen] = useState("login");
   const [selectedAccount, setSelectedAccount] = useState("Guest");
   const [form, setForm] = useState(initialForm);
@@ -53,12 +56,53 @@ export default function Login() {
     });
   };
 
+  const roleMap = {
+    Guest: 1,
+    College: 2,
+    Graduate: 3,
+    Faculty: 4,
+    Staff: 5,
+  };
+
+  const handleLogin = async () => {
+    if (!form.email || !form.password) {
+      alert("Please enter your email and password.");
+      return;
+    }
+
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        {
+          email: form.email,
+          password: form.password,
+        }
+      );
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify(res.data.user)
+      );
+
+      alert(res.data.message);
+
+      navigate("/map");
+    } catch (err) {
+      alert(
+        err.response?.data?.message ||
+          "Login failed."
+      );
+    }
+  };
+
   const handleRegister = async () => {
     if (
       !form.fullName ||
       !form.registerEmail ||
       !form.birthday ||
-      !form.newPassword
+      !form.schoolId ||
+      !form.newPassword ||
+      !form.confirmPassword
     ) {
       alert("Please complete all fields.");
       return;
@@ -69,14 +113,6 @@ export default function Login() {
       return;
     }
 
-    const roleMap = {
-      Guest: 1,
-      College: 2,
-      Graduate: 3,
-      Faculty: 4,
-      Staff: 5,
-    };
-
     try {
       const res = await axios.post(
         "http://localhost:5000/api/auth/register",
@@ -85,6 +121,7 @@ export default function Login() {
           email: form.registerEmail,
           password: form.newPassword,
           birthday: form.birthday,
+          school_id: form.schoolId,
           role_id: roleMap[selectedAccount],
         }
       );
@@ -95,8 +132,10 @@ export default function Login() {
       setSelectedAccount("Guest");
       setScreen("login");
     } catch (err) {
-      console.log(err.response?.data);
-      alert(err.response?.data?.message || "Registration failed.");
+      alert(
+        err.response?.data?.message ||
+          "Registration failed."
+      );
     }
   };
 
@@ -121,6 +160,7 @@ export default function Login() {
 
             <label className="field">
               <span>Email</span>
+
               <input
                 type="email"
                 name="email"
@@ -131,6 +171,7 @@ export default function Login() {
 
             <label className="field">
               <span>Password</span>
+
               <input
                 type="password"
                 name="password"
@@ -140,22 +181,29 @@ export default function Login() {
             </label>
 
             <div className="login-actions">
-              <button className="primary-btn">
-                <Link to="/map">Log in</Link>
+              <button
+                className="primary-btn"
+                type="button"
+                onClick={handleLogin}
+              >
+                Log in
               </button>
 
               <button
                 className="secondary-btn"
+                type="button"
                 onClick={() => setScreen("register")}
               >
                 Create account
               </button>
             </div>
+
           </section>
         </div>
       </main>
     );
   }
+
 
     return (
     <main className="screen register-screen">
@@ -165,6 +213,7 @@ export default function Login() {
         <div className="form-grid">
           <label className="field field-wide">
             <span>Full Name</span>
+
             <input
               type="text"
               name="fullName"
@@ -176,6 +225,7 @@ export default function Login() {
 
           <label className="field field-wide">
             <span>Email</span>
+
             <input
               type="email"
               name="registerEmail"
@@ -187,6 +237,7 @@ export default function Login() {
 
           <label className="field field-wide">
             <span>Birthday</span>
+
             <input
               type="date"
               name="birthday"
@@ -196,7 +247,28 @@ export default function Login() {
           </label>
 
           <label className="field field-wide">
+            <span>
+              {selectedAccount === "Faculty" || selectedAccount === "Staff"
+                ? "Employee ID"
+                : "School ID"}
+            </span>
+
+            <input
+              type="text"
+              name="schoolId"
+              value={form.schoolId}
+              onChange={handleChange}
+              placeholder={
+                selectedAccount === "Faculty" || selectedAccount === "Staff"
+                  ? "Employee ID"
+                  : "School ID"
+              }
+            />
+          </label>
+
+          <label className="field field-wide">
             <span>Password</span>
+
             <input
               type="password"
               name="newPassword"
@@ -208,6 +280,7 @@ export default function Login() {
 
           <label className="field field-wide">
             <span>Confirm Password</span>
+
             <input
               type="password"
               name="confirmPassword"
@@ -218,15 +291,23 @@ export default function Login() {
           </label>
         </div>
 
-        <h2 className="section-title">Account Type</h2>
+        <h2 className="section-title">
+          Account Type
+        </h2>
 
         <div className="account-tabs">
           {accountTypes.map((type) => (
             <button
               key={type}
               type="button"
-              className={selectedAccount === type ? "active" : ""}
-              onClick={() => setSelectedAccount(type)}
+              className={
+                selectedAccount === type
+                  ? "active"
+                  : ""
+              }
+              onClick={() =>
+                setSelectedAccount(type)
+              }
             >
               {type}
             </button>
@@ -250,15 +331,19 @@ export default function Login() {
             <article
               key={item.key}
               className={`permission-note ${item.tone} ${
-                isPermissionSelected(item) ? "selected" : ""
+                isPermissionSelected(item)
+                  ? "selected"
+                  : ""
               }`}
             >
               <h3>{item.title}</h3>
+
               <p>{item.description}</p>
             </article>
           ))}
         </div>
       </aside>
-    </main>
+
+          </main>
   );
 }
