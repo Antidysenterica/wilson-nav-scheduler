@@ -5,9 +5,6 @@ const bcrypt = require("bcrypt");
 const db = require("../config/db");
 
 
-// =====================
-// REGISTER
-// =====================
 router.post("/register", async (req, res) => {
   try {
     const {
@@ -19,20 +16,12 @@ router.post("/register", async (req, res) => {
       role_id,
     } = req.body;
 
-    // Validation
-    if (
-      !full_name ||
-      !email ||
-      !password ||
-      !birthday ||
-      !role_id
-    ) {
+    if (!full_name || !email || !password || !birthday || !role_id) {
       return res.status(400).json({
         message: "Please complete all required fields.",
       });
     }
 
-    // Check email
     db.query(
       "SELECT * FROM USER WHERE email = ?",
       [email],
@@ -51,6 +40,7 @@ router.post("/register", async (req, res) => {
         }
 
         try {
+          // Encrypt password
           const hashedPassword = await bcrypt.hash(password, 10);
 
           db.query(
@@ -83,7 +73,7 @@ router.post("/register", async (req, res) => {
                 });
               }
 
-              res.status(201).json({
+              return res.status(201).json({
                 message: "Registration Successful!",
               });
             }
@@ -91,7 +81,7 @@ router.post("/register", async (req, res) => {
         } catch (error) {
           console.log(error);
 
-          res.status(500).json({
+          return res.status(500).json({
             message: "Server error.",
           });
         }
@@ -100,20 +90,15 @@ router.post("/register", async (req, res) => {
   } catch (error) {
     console.log(error);
 
-    res.status(500).json({
+    return res.status(500).json({
       message: "Server error.",
     });
   }
 });
 
-
-// =====================
-// LOGIN
-// =====================
 router.post("/login", (req, res) => {
   const { email, password } = req.body;
 
-  // Empty fields
   if (!email || !password) {
     return res.status(400).json({
       message: "Please enter your email and password.",
@@ -164,7 +149,7 @@ router.post("/login", (req, res) => {
 
       delete user.password;
 
-      res.json({
+      return res.json({
         message: "Login Successful!",
         user,
       });
