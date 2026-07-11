@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken");
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
@@ -7,14 +8,14 @@ const db = require("../config/db");
 
 router.post("/register", async (req, res) => {
   try {
-    const {
-      full_name,
-      email,
-      password,
-      birthday,
-      school_id,
-      role_id,
-    } = req.body;
+  const {
+  full_name,
+  email,
+  password,
+  birthday,
+  id_number,
+  role_id,
+} = req.body;
 
     if (!full_name || !email || !password || !birthday || !role_id) {
       return res.status(400).json({
@@ -51,7 +52,7 @@ router.post("/register", async (req, res) => {
               email,
               password,
               birthday,
-              school_id,
+              id_number,
               role_id
             )
             VALUES (?,?,?,?,?,?)
@@ -61,22 +62,23 @@ router.post("/register", async (req, res) => {
               email,
               hashedPassword,
               birthday,
-              school_id || null,
+              id_number || null,
               role_id,
             ],
             (err) => {
-              if (err) {
-                console.log(err);
+  if (err) {
+    console.log(err);
 
-                return res.status(500).json({
-                  message: "Registration failed.",
-                });
-              }
+    return res.status(500).json({
+      message: err.sqlMessage || err.message,
+      error: err,
+    });
+  }
 
-              return res.status(201).json({
-                message: "Registration Successful!",
-              });
-            }
+  return res.status(201).json({
+    message: "Registration Successful!",
+  });
+}
           );
         } catch (error) {
           console.log(error);
@@ -113,7 +115,7 @@ router.post("/login", (req, res) => {
       email,
       password,
       birthday,
-      school_id,
+      id_number,
       role_id
     FROM USER
     WHERE email = ?
@@ -147,10 +149,24 @@ router.post("/login", (req, res) => {
         });
       }
 
+      // Generate JWT
+      const token = jwt.sign(
+        {
+          user_id: user.user_id,
+          role_id: user.role_id,
+          email: user.email,
+        },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: process.env.JWT_EXPIRES_IN,
+        }
+      );
+
       delete user.password;
 
       return res.json({
         message: "Login Successful!",
+        token,
         user,
       });
     }

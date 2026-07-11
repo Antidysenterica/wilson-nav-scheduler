@@ -37,7 +37,7 @@ const initialForm = {
   fullName: "",
   registerEmail: "",
   birthday: "",
-  schoolId: "",
+  id_number: "",
   newPassword: "",
   confirmPassword: "",
 };
@@ -100,7 +100,7 @@ export default function Login() {
       !form.fullName ||
       !form.registerEmail ||
       !form.birthday ||
-      !form.schoolId ||
+      !form.id_number ||
       !form.newPassword ||
       !form.confirmPassword
     ) {
@@ -121,7 +121,7 @@ export default function Login() {
           email: form.registerEmail,
           password: form.newPassword,
           birthday: form.birthday,
-          school_id: form.schoolId,
+          id_number: form.id_number,
           role_id: roleMap[selectedAccount],
         }
       );
@@ -255,8 +255,8 @@ export default function Login() {
 
             <input
               type="text"
-              name="schoolId"
-              value={form.schoolId}
+              name="id_number"
+              value={form.id_number}
               onChange={handleChange}
               placeholder={
                 selectedAccount === "Faculty" || selectedAccount === "Staff"
@@ -274,7 +274,7 @@ export default function Login() {
               name="newPassword"
               value={form.newPassword}
               onChange={handleChange}
-              placeholder="Password"
+              placeholder="Password"id_number
             />
           </label>
 
