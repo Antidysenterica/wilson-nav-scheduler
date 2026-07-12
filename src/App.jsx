@@ -11,7 +11,7 @@ import ManageAppointment from "./pages/ManageAppointment";
 import Map from "./pages/Map";
 import Profile from "./pages/Profile";
 import TimeSlotEdit from "./pages/TimeSlotEdit";
-// import NotFound from "./pages/NotFound";
+import NotFound from "./pages/NotFound";
 
 // Components
 import Navbar from "./components/Navbar";
