@@ -2,7 +2,7 @@
     background-color: hsl(0, 0%, 100%);
     color: hsl(0, 0%, 0%);
     text-align: center;
-    width: 320px;
+    width: min(100%, 360px);
     padding: 20px;
     padding-top: 0px;
     border-radius: 5px;
@@ -79,7 +79,7 @@
 
 .DateCell {
     min-height: 35px;
-    width: 35px;
+    width: 100%;
     border: 1px solid hsl(43, 17%, 84%);
     display: flex;
     border-radius: 5px;
@@ -119,4 +119,8 @@
 .DateCell.selected {
     background-color: hsl(217, 91%, 60%);
     color: white;
+}
+
+.DateCell:not(.available) {
+    cursor: default;
 }
