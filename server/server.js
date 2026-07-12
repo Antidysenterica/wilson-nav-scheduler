@@ -11,7 +11,7 @@ app.use(express.json());
 // Routes
 const authRoutes = require("./routes/auth");
 const appointmentRoutes = require("./routes/appointment");
-const timeSlotRoutes = require("./routes/timeslots");
+const timeSlotRoutes = require("./routes/timeslot");
 
 // API Endpoints
 app.use("/api/auth", authRoutes);
