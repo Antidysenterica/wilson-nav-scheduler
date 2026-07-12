@@ -29,7 +29,7 @@ function App() {
         <Route path="/map" element={<Map />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/time-slot-edit" element={<TimeSlotEdit />} />
-        <Route path="*" element={<h1>404 TEST</h1>} />
+        <Route path="*" element={<NotFound />} />
         
       </Routes>
     </BrowserRouter>
