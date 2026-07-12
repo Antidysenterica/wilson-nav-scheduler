@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from "react";
-import { Menu, User, MapPin } from "lucide-react";
 import "../styles/Layout.css";
 import { Link } from "react-router-dom";
 import DocumentTitle from "../hooks/DocumentTitle";
@@ -24,7 +23,7 @@ import campusLogo from "../assets/logo-icon.png";
 
 const navItems = [
   { label: "Map", icon: MapPinned, path: "/map" },
-  { label: "Rooms", icon: DoorOpen },
+  { label: "Rooms", icon: DoorOpen, path: "/map" },
   { label: "Appointments", icon: CalendarCheck, path: "/appointment" },
   { label: "Manage", icon: Settings2, path: "/manage-appointment" },
   { label: "Account", icon: UserRound, path: "/profile" }
@@ -214,10 +213,7 @@ function Map() {
                 key={item.label}
                 to={item.path}
                 className={`nav-item ${activeNav === item.label ? "is-active" : ""}`}
-                key={item.label}
-                type="button"
                 onClick={() => setActiveNav(item.label)}
-                >
               >
                 <Icon size={18} aria-hidden="true" />
                 <span>{item.label}</span>
