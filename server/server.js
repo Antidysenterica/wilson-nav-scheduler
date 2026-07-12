@@ -10,7 +10,7 @@ app.use(express.json());
 
 // Routes
 const authRoutes = require("./routes/auth");
-const appointmentRoutes = require("./routes/appointments");
+const appointmentRoutes = require("./routes/appointment");
 const timeSlotRoutes = require("./routes/timeslots");
 
 // API Endpoints
