@@ -263,21 +263,14 @@ export default function Login() {
 
           <label className="field field-wide">
             <span>
-              {selectedAccount === "Faculty" || selectedAccount === "Staff"
-                ? "Employee ID"
-                : "School ID"}{" "}
-              {requiresIdNumber ? "" : "(optional)"}
+              ID Number {requiresIdNumber ? "" : "(optional)"}
             </span>
             <input
               type="text"
               name="id_number"
               value={form.id_number}
               onChange={handleChange}
-              placeholder={
-                selectedAccount === "Faculty" || selectedAccount === "Staff"
-                  ? "Employee ID"
-                  : "2026-00000"
-              }
+              placeholder="2026-00000"
               disabled={!requiresIdNumber}
             />
           </label>
