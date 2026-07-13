@@ -2,7 +2,7 @@ import '../styles/Calendar.css'
 import { useState } from 'react'
 import { availableSchedules } from './dummyschedules.js'
 
-function Calendar({ selectedDate, onDateSelect }) {
+function Calendar({ selectedDate, onDateSelect = () => {} }) {
 
     const [currentDate, setCurrentDate] = useState(new Date());
     const today = new Date();
@@ -138,6 +138,14 @@ function Calendar({ selectedDate, onDateSelect }) {
                             key={index}
                             className={`DateCell ${isToday ? "today" : ""} ${hasSlots ? "available" : ""} ${isSelected ? "selected" : ""}`}
                             onClick={() => handleDateClick(day)}
+                            role="button"
+                            tabIndex={hasSlots ? 0 : -1}
+                            onKeyDown={(event) => {
+                                if (hasSlots && (event.key === "Enter" || event.key === " ")) {
+                                    event.preventDefault();
+                                    handleDateClick(day);
+                                }
+                            }}
                         >
                             <span className="DateNumber">{day}</span>
                         </div>

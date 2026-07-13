@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 // Landing Page
 import LandingPage from "./pages/LandingPage";
@@ -11,28 +11,27 @@ import ManageAppointment from "./pages/ManageAppointment";
 import Map from "./pages/Map";
 import Profile from "./pages/Profile";
 import TimeSlotEdit from "./pages/TimeSlotEdit";
+import NotFound from "./pages/NotFound";
 
 // Components
 import Navbar from "./components/Navbar";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
         
-        <Route path="/about" element={<About />} />
-        <Route path="/appointment" element={<Appointment />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/manage-appointment" element={<ManageAppointment />} />
-        <Route path="/map" element={<Map />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/time-slot-edit" element={<TimeSlotEdit />} />
-
-        {/*<Route path="*" element={<NotFound />} />*/}
+      <Route path="/about" element={<About />} />
+      <Route path="/appointment" element={<Appointment />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/manage-appointment" element={<ManageAppointment />} />
+      <Route path="/map" element={<Map />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/time-slot-edit" element={<TimeSlotEdit />} />
         
-      </Routes>
-    </BrowserRouter>
+      <Route path="*" element={<NotFound />} />
+        
+    </Routes>
   );
 }
 

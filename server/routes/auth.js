@@ -1,74 +1,176 @@
+const jwt = require("jsonwebtoken");
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 
 const db = require("../config/db");
 
-// REGISTER
+
 router.post("/register", async (req, res) => {
   try {
-    const {
-      full_name,
-      email,
-      password,
-      birthday,
-      role_id,
-    } = req.body;
+  const {
+  full_name,
+  email,
+  password,
+  birthday,
+  id_number,
+  role_id,
+} = req.body;
+
+    if (!full_name || !email || !password || !birthday || !role_id) {
+      return res.status(400).json({
+        message: "Please complete all required fields.",
+      });
+    }
 
     db.query(
       "SELECT * FROM USER WHERE email = ?",
       [email],
       async (err, result) => {
-        if (err) return res.status(500).json(err);
-
-        if (result.length > 0) {
-          return res.status(400).json({
-            message: "Email already exists",
+        if (err) {
+          console.log(err);
+          return res.status(500).json({
+            message: "Database error.",
           });
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        if (result.length > 0) {
+          return res.status(400).json({
+            message: "Email already exists.",
+          });
+        }
 
-        // Split full name
-        const names = full_name.trim().split(" ");
+        try {
+          // Encrypt password
+          const hashedPassword = await bcrypt.hash(password, 10);
 
-        const first_name = names[0];
-        const last_name = names[names.length - 1];
-        const middle_name =
-          names.length > 2
-            ? names.slice(1, names.length - 1).join(" ")
-            : null;
+          db.query(
+            `
+            INSERT INTO USER
+            (
+              full_name,
+              email,
+              password,
+              birthday,
+              id_number,
+              role_id
+            )
+            VALUES (?,?,?,?,?,?)
+            `,
+            [
+              full_name,
+              email,
+              hashedPassword,
+              birthday,
+              id_number || null,
+              role_id,
+            ],
+            (err) => {
+  if (err) {
+    console.log(err);
 
-        db.query(
-          `INSERT INTO USER
-          (first_name,middle_name,last_name,email,password,birthday,role_id)
-          VALUES (?,?,?,?,?,?,?)`,
-          [
-            first_name,
-            middle_name,
-            last_name,
-            email,
-            hashedPassword,
-            birthday,
-            role_id,
-          ],
-          (err) => {
-            if (err) {
-              console.log(err);
-              return res.status(500).json(err);
-            }
+    return res.status(500).json({
+      message: err.sqlMessage || err.message,
+      error: err,
+    });
+  }
 
-            res.status(201).json({
-              message: "Registration Successful!",
-            });
-          }
-        );
+  return res.status(201).json({
+    message: "Registration Successful!",
+  });
+}
+          );
+        } catch (error) {
+          console.log(error);
+
+          return res.status(500).json({
+            message: "Server error.",
+          });
+        }
       }
     );
   } catch (error) {
     console.log(error);
-    res.status(500).json(error);
+
+    return res.status(500).json({
+      message: "Server error.",
+    });
   }
+});
+
+router.post("/login", (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({
+      message: "Please enter your email and password.",
+    });
+  }
+
+  db.query(
+    `
+    SELECT
+      user_id,
+      full_name,
+      email,
+      password,
+      birthday,
+      id_number,
+      role_id
+    FROM USER
+    WHERE email = ?
+    `,
+    [email],
+    async (err, result) => {
+      if (err) {
+        console.log(err);
+
+        return res.status(500).json({
+          message: "Database error.",
+        });
+      }
+
+      if (result.length === 0) {
+        return res.status(401).json({
+          message: "Invalid email or password.",
+        });
+      }
+
+      const user = result[0];
+
+      const match = await bcrypt.compare(
+        password,
+        user.password
+      );
+
+      if (!match) {
+        return res.status(401).json({
+          message: "Invalid email or password.",
+        });
+      }
+
+      // Generate JWT
+      const token = jwt.sign(
+        {
+          user_id: user.user_id,
+          role_id: user.role_id,
+          email: user.email,
+        },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: process.env.JWT_EXPIRES_IN,
+        }
+      );
+
+      delete user.password;
+
+      return res.json({
+        message: "Login Successful!",
+        token,
+        user,
+      });
+    }
+  );
 });
 
 module.exports = router;

@@ -1,40 +1,90 @@
 .FacultyAppointments {
-    font-family: Intel, sans-serif;
+    min-height: 100%;
+    font-family: "Inter", sans-serif;
     display: flex;
     flex-direction: column;
     gap: 16px;
     background-color: white;
-    padding: 20px;
+    padding: 22px;
     pointer-events: auto;
     border: 2px solid hsl(43, 17%, 84%);
-    border-radius: 5px;
+    border-radius: 6px;
 }
 
-.FacultyAppointments h1 {
+.empty-review-card {
+    justify-content: center;
+}
+
+.FacultyAppointments h2 {
     font-size: 20px;
-    font-weight: 600;
+    font-weight: 700;
     margin: 0;
+}
+
+.FacultyAppointments p {
+    margin: 0;
+}
+
+.ReviewHeader {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.ReviewHeader span {
+    display: block;
+    margin-bottom: 4px;
+    color: hsl(220, 4%, 46%);
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.ReviewStatus {
+    border-radius: 999px;
+    padding: 6px 10px;
+    font-size: 10px;
+    line-height: 1;
+}
+
+.ReviewStatus.pending {
+    background: hsl(48, 100%, 88%);
+    color: hsl(31, 83%, 32%);
+}
+
+.ReviewStatus.approved {
+    background: hsl(180, 24%, 90%);
+    color: hsl(183, 48%, 28%);
+}
+
+.ReviewStatus.rejected {
+    background: hsl(14, 52%, 90%);
+    color: hsl(359, 73%, 42%);
 }
 
 .AppointmentDetails {
     background-color: hsl(40, 20%, 94%);
     border: 1px solid hsl(42, 18%, 85%);
     border-radius: 6px;
-    padding: 16px 20px;
+    padding: 16px 18px;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 7px;
 }
 
 .AppointmentDetails p {
-    margin: 0;
-    font-size: 11px;
+    font-size: 12px;
+    line-height: 1.35;
 }
 
 .AppointmentDetails p:first-child {
     font-size: 12px;
-    font-weight: 600;
     color: hsl(220, 4%, 46%);
+}
+
+.AppointmentDetails span {
+    font-weight: 800;
 }
 
 .DecisionButtons {
@@ -44,18 +94,25 @@
 }
 
 .RejectButton,
-.ApproveButton {
-    width: 50%;
-    height: 38px;
+.ApproveButton,
+.SubmitButton {
+    min-height: 40px;
     border-radius: 6px;
     font-family: "Inter", sans-serif;
-    font-size: 11px;
+    font-size: 12px;
+    font-weight: 800;
     cursor: pointer;
+}
+
+.RejectButton,
+.ApproveButton {
+    width: 50%;
 }
 
 .RejectButton {
     background-color: hsl(14, 52%, 90%);
     border: 1px solid hsl(359, 100%, 61%);
+    color: hsl(359, 73%, 42%);
 }
 
 .ApproveButton {
@@ -66,24 +123,29 @@
 
 .FacultyAppointments label {
     font-size: 11px;
+    font-weight: 800;
 }
 
-.FacultyAppointments input {
+.FacultyAppointments textarea {
     width: 100%;
+    resize: vertical;
+    min-height: 96px;
     padding: 10px;
     border: 1px solid hsl(42, 18%, 85%);
     border-radius: 6px;
     font-family: "Inter", sans-serif;
-    font-size: 11px;
+    font-size: 12px;
     box-sizing: border-box;
+}
+
+.FacultyAppointments textarea:focus {
+    outline: none;
+    border-color: hsl(208, 80%, 23%);
 }
 
 .SubmitButton {
     padding: 10px 24px;
     background-color: hsl(0, 0%, 100%);
     border: 1px solid hsl(42, 18%, 85%);
-    border-radius: 6px;
-    font-family: "Inter", sans-serif;
-    font-size: 11px;
-    cursor: pointer;
+    color: hsl(208, 80%, 23%);
 }

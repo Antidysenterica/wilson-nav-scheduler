@@ -1,23 +1,62 @@
-import React, { useState } from "react";
-import "../styles/Layout.css";
+import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import Requests from "../components/Requests";
+import FacultyAppointments from "../components/FacultyAppointments";
+import { initialRequests } from "../data/requests";
+import "../styles/Layout.css";
 import DocumentTitle from "../hooks/DocumentTitle";
 
-import { Bell, CalendarCheck, DoorOpen, MapPinned, Settings2, SlidersHorizontal, UserRound } from "lucide-react";
+import {
+  Bell,
+  CalendarCheck,
+  DoorOpen,
+  MapPinned,
+  Settings2,
+  SlidersHorizontal,
+  UserRound,
+} from "lucide-react";
 import campusLogo from "../assets/logo-icon.png";
 
 const navItems = [
   { label: "Map", icon: MapPinned, path: "/map" },
-  { label: "Rooms", icon: DoorOpen },
+  { label: "Rooms", icon: DoorOpen, path: "/map" },
   { label: "Appointments", icon: CalendarCheck, path: "/appointment" },
   { label: "Manage", icon: Settings2, path: "/manage-appointment" },
-  { label: "Account", icon: UserRound, path: "/profile" }
+  { label: "Account", icon: UserRound, path: "/profile" },
 ];
 
-function Map() {
+function ManageAppointment() {
   DocumentTitle("Appointment Requests");
-  
-  const [activeNav, setActiveNav] = useState("Map");
+
+  const [requests, setRequests] = useState(initialRequests);
+  const [selectedRequestId, setSelectedRequestId] = useState(initialRequests[0]?.id);
+
+  const selectedRequest = requests.find((request) => request.id === selectedRequestId);
+
+  const counts = useMemo(() => {
+    return requests.reduce(
+      (current, request) => ({
+        ...current,
+        [request.status]: (current[request.status] || 0) + 1,
+      }),
+      {}
+    );
+  }, [requests]);
+
+  function handleDecision(id, status, note) {
+    setRequests((currentRequests) =>
+      currentRequests.map((request) =>
+        request.id === id
+          ? {
+              ...request,
+              status,
+              note,
+            }
+          : request
+      )
+    );
+  }
+
   return (
     <main className="app-shell">
       <aside className="sidebar" aria-label="Main navigation">
@@ -33,9 +72,8 @@ function Map() {
               <Link
                 key={item.label}
                 to={item.path}
-                className={`nav-item ${activeNav === item.label ? "is-active" : ""}`}
-                onClick={() => setActiveNav(item.label)}
-                >
+                className={`nav-item ${item.label === "Manage" ? "is-active" : ""}`}
+              >
                 <Icon size={18} aria-hidden="true" />
                 <span>{item.label}</span>
               </Link>
@@ -51,35 +89,59 @@ function Map() {
         </div>
       </aside>
 
-      <section className="workspace" id="top">
-	  <header className="topbar">
-	    <div className="top-actions">
-	      <button className="icon-button" type="button">
-		<SlidersHorizontal size={18} />
-	      </button>
+      <section className="workspace manage-workspace" id="top">
+        <header className="topbar">
+          <div className="top-actions">
+            <button className="icon-button" type="button" aria-label="Filters">
+              <SlidersHorizontal size={18} aria-hidden="true" />
+            </button>
 
-	      <button className="icon-button has-dot" type="button">
-		<Bell size={18} />
-	      </button>
-	    </div>
-	  </header>
+            <button className="icon-button has-dot" type="button" aria-label="Notifications">
+              <Bell size={18} aria-hidden="true" />
+            </button>
+          </div>
+        </header>
 
-	  <div className="title-row">
-	    <div>
-	      <p className="eyebrow">Manage Appointments</p>
+        <div className="title-row">
+          <div>
+            <p className="eyebrow">Manage Appointments</p>
+            <h1>Approve Appointment</h1>
+            <p className="title-helper">
+              Select an appointment, review the details, and approve or reject the request.
+            </p>
+          </div>
 
-	      <h1>Approve/Reject Pending Appointment</h1>
+          <div className="stat-row" aria-label="Approval summary">
+            <div className="stat-pill">
+              <strong>{counts.Pending || 0}</strong>
+              <span>Pending</span>
+            </div>
+            <div className="stat-pill">
+              <strong>{counts.Approved || 0}</strong>
+              <span>Approved</span>
+            </div>
+            <div className="stat-pill">
+              <strong>{counts.Rejected || 0}</strong>
+              <span>Rejected</span>
+            </div>
+          </div>
+        </div>
 
-	      <p className="title-helper">
-		Select an appointment, view their details, and decide whether you want to approve or decline/reject the requested appointment.
-	      </p>
-	    </div>
-	  </div>
-	  
-	  <p><Link to="/time-slot-edit">Edit Available Time Slot</Link></p>
-	</section>
+        <div className="manage-grid">
+          <Requests
+            requests={requests}
+            selectedRequestId={selectedRequestId}
+            onReview={setSelectedRequestId}
+          />
+
+          <FacultyAppointments
+            request={selectedRequest}
+            onDecision={handleDecision}
+          />
+        </div>
+      </section>
     </main>
   );
 }
 
-export default Map;
+export default ManageAppointment;

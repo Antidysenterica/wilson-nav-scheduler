@@ -1,0 +1,126 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+.notfound-container{
+    min-height:100vh;
+    background:#dceef8;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.notfound-content{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.notfound-card{
+    width:550px;
+
+    background:#fff;
+
+    border:1px solid #d8d8d8;
+    border-radius:8px;
+
+    padding:40px 55px;
+
+    text-align:center;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+
+.error-code{
+    display:block;
+
+    color:#163f7b;
+
+    font-size:80px;
+    font-weight:800;
+
+    margin-bottom:10px;
+}
+
+.notfound-card h2{
+    color:#2b2b2b;
+
+    font-size:28px;
+
+    margin-bottom:18px;
+}
+
+.notfound-card p{
+    color:#7c7c7c;
+
+    line-height:1.6;
+
+    margin-bottom:30px;
+}
+
+.home-btn,
+.map-btn{
+    width:180px;
+    height:46px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    border-radius:6px;
+
+    text-decoration:none;
+    font-weight:700;
+
+    transition:.25s;
+}
+
+.home-btn{
+    background:#163f7b;
+    color:white;
+}
+
+.home-btn:hover{
+    background:#0f2f5d;
+}
+
+.map-btn{
+    background:#2aa3c7;
+    color:white;
+}
+
+.map-btn:hover{
+    background:#1b8eb0;
+}
+
+.button-group{
+    display:flex;
+    justify-content:center;
+    gap:18px;
+}
+
+@media(max-width:768px){
+
+    .notfound-card{
+        width:90%;
+        padding:28px;
+    }
+
+    .error-code{
+        font-size:64px;
+    }
+
+    .button-group{
+        flex-direction:column;
+    }
+
+    .home-btn,
+    .map-btn{
+        width:100%;
+    }
+}
