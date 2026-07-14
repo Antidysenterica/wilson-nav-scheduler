@@ -4,11 +4,17 @@ import { Link, useNavigate } from "react-router-dom";
 import DocumentTitle from "../hooks/DocumentTitle";
 import { canAccess, getCurrentUser } from "../utils/permissions";
 import { logout } from "../utils/auth";
+import { useEffect } from "react";
+import {
+    getBuildings,
+    getFloors,
+    getRooms,
+    getRoomDetails
+} from "../services/buildingService";
 import {
   ArrowLeft,
   Bell,
   Building2,
-  CalendarCheck,
   ChevronRight,
   DoorOpen,
   Layers3,
@@ -24,134 +30,37 @@ import {
 } from "lucide-react";
 import campusLogo from "../assets/logo-icon.png";
 
-const buildings = [
-  {
-    id: "phelan",
-    name: "Phelan Hall",
-    code: "PH",
-    floors: 3,
-    rooms: 42,
-    occupancy: "Open",
-    tone: "blue",
-    left: 62,
-    top: 42,
-    width: 16,
-    height: 14,
-    rotate: -8
+const buildingPositions = {
+  1:{
+    left:62,
+    top:42
   },
-  {
-    id: "xavier",
-    name: "Xavier Hall",
-    code: "XH",
-    floors: 4,
-    rooms: 58,
-    occupancy: "Busy",
-    tone: "teal",
-    left: 35,
-    top: 25,
-    width: 17,
-    height: 13,
-    rotate: 8
+
+  2:{
+    left:35,
+    top:25
   },
-  {
-    id: "arrupe",
-    name: "Arrupe Hall",
-    code: "AH",
-    floors: 2,
-    rooms: 28,
-    occupancy: "Open",
-    tone: "yellow",
-    left: 17,
-    top: 55,
-    width: 19,
-    height: 15,
-    rotate: -1
+
+  3:{
+    left:17,
+    top:55
   },
-  {
-    id: "library",
-    name: "University Library",
-    code: "UL",
-    floors: 5,
-    rooms: 35,
-    occupancy: "Open",
-    tone: "navy",
-    left: 50,
-    top: 61,
-    width: 16,
-    height: 13,
-    rotate: 8
+
+  4:{
+    left:50,
+    top:61
   },
-  {
-    id: "science",
-    name: "Science Center",
-    code: "SC",
-    floors: 4,
-    rooms: 64,
-    occupancy: "Limited",
-    tone: "green",
-    left: 73,
-    top: 22,
-    width: 15,
-    height: 13,
-    rotate: -10
+
+  5:{
+    left:73,
+    top:22
   },
-  {
-    id: "admin",
-    name: "Administration",
-    code: "AD",
-    floors: 3,
-    rooms: 22,
-    occupancy: "Open",
-    tone: "coral",
-    left: 30,
-    top: 72,
-    width: 17,
-    height: 12,
-    rotate: 7
+
+  6:{
+    left:30,
+    top:72
   }
-];
-
-const floorData = {
-  phelan: [
-    { label: "Floor 1", status: "Classrooms", available: 9 },
-    { label: "Floor 2", status: "Faculty rooms", available: 6 },
-    { label: "Floor 3", status: "Labs", available: 4 }
-  ],
-  xavier: [
-    { label: "Floor 1", status: "Lobby", available: 5 },
-    { label: "Floor 2", status: "Lecture halls", available: 10 },
-    { label: "Floor 3", status: "Studios", available: 7 },
-    { label: "Floor 4", status: "Offices", available: 4 }
-  ],
-  arrupe: [
-    { label: "Floor 1", status: "Student services", available: 7 },
-    { label: "Floor 2", status: "Guidance", available: 3 }
-  ],
-  library: [
-    { label: "Floor 1", status: "Stacks", available: 12 },
-    { label: "Floor 2", status: "Reading areas", available: 14 },
-    { label: "Floor 3", status: "Archives", available: 2 },
-    { label: "Floor 4", status: "Media", available: 5 },
-    { label: "Floor 5", status: "Research", available: 3 }
-  ],
-  science: [
-    { label: "Floor 1", status: "Chemistry", available: 3 },
-    { label: "Floor 2", status: "Biology", available: 5 },
-    { label: "Floor 3", status: "Physics", available: 4 },
-    { label: "Floor 4", status: "Research", available: 1 }
-  ],
-  admin: [
-    { label: "Floor 1", status: "Registrar", available: 4 },
-    { label: "Floor 2", status: "Finance", available: 3 },
-    { label: "Floor 3", status: "Dean offices", available: 2 }
-  ]
 };
-
-const campusStats = [
-  { label: "Buildings", value: "12" },
-  { label: "Available rooms", value: "92" },
-  { label: "Appointments", value: "18" }
-];
 
 const ROLE_NAMES = {
   1: "Guest",
@@ -164,7 +73,6 @@ const ROLE_NAMES = {
 
 function Map() {
   DocumentTitle("Campus Map");
-  const navigate = useNavigate();
 
   const [activeNav, setActiveNav] = useState("Map");
   const [selectedId, setSelectedId] = useState(null);
@@ -177,18 +85,174 @@ function Map() {
   const isFacultyStaff = canAccess("FACULTY_STAFF");
   const buildingSelected = selectedId !== null;
 
-  const selectedBuilding = buildings.find((building) => building.id === selectedId) ?? null;
-  const floors = selectedBuilding ? floorData[selectedBuilding.id] ?? [] : [];
+  const [buildings, setBuildings] = useState([]);
+  const [floors, setFloors] = useState([]);
+  const [rooms, setRooms] = useState([]);
+  const selectedBuilding = buildings.find(
+    (building)=>building.building_id === selectedId
+  ) ?? null;
+  
+  const [loadingBuildings,setLoadingBuildings]=useState(true);
+  const [roomCount, setRoomCount] = useState(0);
+  const [selectedRoom, setSelectedRoom] = useState(null);
+
+
+useEffect(() => {
+
+    getBuildings()
+      .then((res) => {
+
+        setBuildings(
+          res.data.map((building)=>({
+
+            ...building,
+
+            code:
+		building.building_name
+		.replace("University ","")
+		.split(" ")
+		.map(word=>word[0])
+		.join("")
+		.substring(0,2)
+		.toUpperCase(),
+              
+              
+
+            tone:"blue",
+
+            left: buildingPositions[building.building_id]?.left ?? 20,
+            top: buildingPositions[building.building_id]?.top ?? 20,
+
+            width:15,
+            height:12,
+            rotate:0
+
+          }))
+        );
+
+      })
+      .catch((err)=>{
+          console.log(err);
+      })
+      .finally(()=>{
+          setLoadingBuildings(false);
+      });
+
+}, []);
+
+	useEffect(() => {
+
+	  if(!selectedId){
+	      setFloors([]);
+	      return;
+	  }
+
+	  getFloors(selectedId)
+	  .then((res)=>{
+	      setFloors(res.data);
+	  });
+
+	},[selectedId]);
+	
+useEffect(()=>{
+
+    if(!floors[activeFloor]){
+        setRooms([]);
+        return;
+    }
+
+
+    const floorId = floors[activeFloor].floor_id;
+
+
+    getRooms(floorId)
+    .then((res)=>{
+
+        setRooms(res.data);
+
+    })
+    .catch((error)=>{
+
+        console.log(error);
+
+    });
+
+
+},[floors, activeFloor]);
+
+useEffect(()=>{
+
+    async function fetchRoomCount(){
+
+        let totalRooms = 0;
+
+        try{
+
+            for(const building of buildings){
+
+                const floorsResponse = await getFloors(
+                    building.building_id
+                );
+
+                for(const floor of floorsResponse.data){
+
+                    const roomsResponse = await getRooms(
+                        floor.floor_id
+                    );
+
+                    totalRooms += roomsResponse.data.length;
+
+                }
+            }
+
+            setRoomCount(totalRooms);
+
+        }catch(error){
+            console.log(error);
+        }
+
+    }
+
+
+    if(buildings.length > 0){
+        fetchRoomCount();
+    }
+
+
+},[buildings]);
+
+
+
+useEffect(()=>{
+
+    if(!selectedRoom){
+        return;
+    }
+
+
+    getRoomDetails(selectedRoom.room_id)
+    .then((res)=>{
+
+        setSelectedRoom(res.data);
+
+    })
+    .catch((error)=>{
+        console.log(error);
+    });
+
+
+},[selectedRoom]);
 
   const searchResults = useMemo(() => {
     const cleanQuery = query.trim().toLowerCase();
     if (!cleanQuery) return [];
 
-    return buildings.filter((building) => {
-      return (
-        building.name.toLowerCase().includes(cleanQuery) ||
-        building.code.toLowerCase().includes(cleanQuery)
-      );
+    return buildings.filter((building)=>{
+    return(
+        building.building_name
+        .toLowerCase()
+        .includes(cleanQuery)
+	);
     });
   }, [query]);
 
@@ -247,26 +311,26 @@ function Map() {
   ]);
 
   function selectBuilding(buildingId) {
-    setSelectedId(buildingId);
-    setActiveFloor(0);
+      setSelectedId(buildingId);
+      setFloors([]);
+      setActiveFloor(0);
   }
 
   function handleSearchSubmit(event) {
-    event.preventDefault();
-    if (searchResults[0]) {
-      selectBuilding(searchResults[0].id);
-      setQuery(searchResults[0].name);
-    }
-  }
 
-  function handleLogout() {
+	  event.preventDefault();
 
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
+	  if(searchResults[0]){
 
-    navigate("/");
+	    selectBuilding(
+	      searchResults[0].building_id
+	    );
 
-    window.location.reload();
+	    setQuery(
+	      searchResults[0].building_name
+	    );
+
+	  }
   }
 
   return (
@@ -332,17 +396,23 @@ function Map() {
                 <div className="search-results" role="listbox" aria-label="Search results">
                   {searchResults.map((building) => (
                     <button
-                      key={building.id}
+                      key={building.building_id}
                       type="button"
                       role="option"
-                      onClick={() => {
-                        selectBuilding(building.id);
-                        setQuery(building.name);
-                      }}
+                      onClick={()=>{
+		      selectBuilding(building.building_id);
+			    setQuery(building.building_name);
+			}}
                     >
                       <Building2 size={15} aria-hidden="true" />
-                      <span>{building.name}</span>
-                      <small>{building.code}</small>
+                      <span>{building.building_name}</span>
+                      <small>
+			{
+			building.building_name
+			.substring(0,2)
+			.toUpperCase()
+			}
+			</small>
                     </button>
                   ))}
                 </div>
@@ -374,7 +444,16 @@ function Map() {
             </p>
           </div>
           <div className="stat-row" aria-label="Campus summary">
-            {campusStats.map((stat) => (
+            {[
+		{
+		    label:"Buildings",
+		    value:buildings.length
+		  },
+		  {
+		    label:"Rooms",
+		    value:roomCount
+		  }
+		].map((stat)=>(
               <div className="stat-pill" key={stat.label}>
                 <strong>{stat.value}</strong>
                 <span>{stat.label}</span>
@@ -420,10 +499,10 @@ function Map() {
 
             {selectedBuilding ? (
               <>
-                <h2>{selectedBuilding.name}</h2>
+                <h2>{selectedBuilding.building_name}</h2>
                 <p>
-                  Floors: {selectedBuilding.floors} <span>{selectedBuilding.rooms} rooms</span>
-                </p>
+		Selected building
+		</p>
 
                 <button className="wide-button" type="button">
                   <Layers3 size={17} aria-hidden="true" />
@@ -431,25 +510,147 @@ function Map() {
                 </button>
 
                 <div className="floor-tabs" aria-label="Floors">
-                  {floors.map((floor, index) => (
-                    <button
-                      key={floor.label}
-                      className={activeFloor === index ? "is-active" : ""}
-                      type="button"
-                      onClick={() => setActiveFloor(index)}
-                    >
-                      {index + 1}
-                    </button>
-                  ))}
+                  {floors.map((floor,index)=>(
+		<button
+			key={floor.floor_id}
+			className={activeFloor===index ? "is-active":""}
+			onClick={()=>{
+
+			    setActiveFloor(index);
+			    setRooms([]);
+			    setSelectedRoom(null);
+
+			}}
+			>
+			{floor.floor_number}
+			</button>
+		))}
                 </div>
 
                 {floors[activeFloor] && (
                   <div className="floor-card">
-                    <span>{floors[activeFloor].label}</span>
-                    <strong>{floors[activeFloor].status}</strong>
-                    <small>{floors[activeFloor].available} rooms available</small>
+                    <span>
+			{floors[activeFloor].floor_name}
+			</span>
+
+			<strong>
+			Floor {floors[activeFloor].floor_number}
+			</strong>
+                    <small>
+			Select this floor to view rooms
+		    </small>
                   </div>
                 )}
+                
+                <div className="room-list">
+                
+		{
+		selectedRoom && (
+
+		<div className="room-details">
+
+		<h3>
+		Room Details
+		</h3>
+
+
+		<h2>
+		{selectedRoom.room_name}
+		</h2>
+
+
+		<p>
+		<strong>
+		Code:
+		</strong>
+		{selectedRoom.room_code}
+		</p>
+
+
+		<p>
+		<strong>
+		Type:
+		</strong>
+		{selectedRoom.room_type}
+		</p>
+
+
+		<p>
+		<strong>
+		Status:
+		</strong>
+		{selectedRoom.room_status}
+		</p>
+
+
+		<p>
+		<strong>
+		Office Hours:
+		</strong>
+
+		{
+		selectedRoom.office_hours ??
+		"No schedule available"
+		}
+
+		</p>
+
+
+		</div>
+
+		)
+		}
+
+		<h3>
+		    Rooms
+		</h3>
+
+
+		{
+		rooms.length > 0 ? (
+
+		rooms.map((room)=>(
+
+		<button
+		key={room.room_id}
+		className="room-item"
+		type="button"
+		onClick={() => setSelectedRoom(room)}
+		>
+
+		<div>
+		<strong>
+		{room.room_name}
+		</strong>
+
+		<span>
+		{room.room_code}
+		</span>
+		</div>
+
+		<small>
+		{room.room_type}
+		</small>
+
+		</button>
+
+		))
+
+		)
+
+		:
+
+		(
+
+		<p>
+		No rooms available
+		</p>
+
+		)
+
+		}
+
+		</div>
 
                 <div className="route-card">
                   <Navigation size={18} aria-hidden="true" />
@@ -500,9 +701,9 @@ function CampusCanvas({ buildings: campusBuildings, selectedId, onSelectBuilding
         {campusBuildings.map((building) => (
           <button
             className={`campus-building tone-${building.tone} ${
-              selectedId === building.id ? "is-selected" : ""
+              selectedId === building.building_id ? "is-selected" : ""
             }`}
-            key={building.id}
+            key={building.building_id}
             style={{
               left: `${building.left}%`,
               top: `${building.top}%`,
@@ -511,12 +712,14 @@ function CampusCanvas({ buildings: campusBuildings, selectedId, onSelectBuilding
               "--rotate": `${building.rotate}deg`
             }}
             type="button"
-            onClick={() => onSelectBuilding(building.id)}
-            aria-label={building.name}
+            onClick={() => onSelectBuilding(building.building_id)}
+            aria-label={building.building_name}
           >
             <span className="building-roof" />
             <span className="building-code">{building.code}</span>
-            <span className="building-name">{building.name}</span>
+            <span className="building-name">
+		{building.building_name}
+	    </span>
           </button>
         ))}
 
