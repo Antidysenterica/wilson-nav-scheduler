@@ -332,6 +332,7 @@ function selectBuilding(buildingId) {
       setFloors([]);
       setRooms([]);
       setRoomDetails(null);
+	  setSelectedRoomId(null);
       setActiveFloor(0);
 
 }
@@ -565,7 +566,7 @@ function selectBuilding(buildingId) {
                 <div className="room-list">
                 
 		{
-		selectedRoom && (
+		roomDetails && (
 
 		<div className="room-details">
 
@@ -575,7 +576,7 @@ function selectBuilding(buildingId) {
 
 
 		<h2>
-		{roomDetails.room_name}
+		{roomDetails?.room_name}
 		</h2>
 
 
@@ -583,7 +584,7 @@ function selectBuilding(buildingId) {
 		<strong>
 		Code:
 		</strong>
-		{roomDetails.room_code}
+		{roomDetails?.room_code}
 		</p>
 
 
@@ -591,7 +592,7 @@ function selectBuilding(buildingId) {
 		<strong>
 		Type:
 		</strong>
-		{roomDetails.room_type}
+		{roomDetails?.room_type}
 		</p>
 
 
@@ -599,7 +600,7 @@ function selectBuilding(buildingId) {
 		<strong>
 		Status:
 		</strong>
-		{roomDetails.room_status}
+		{roomDetails?.room_status}
 		</p>
 
 
@@ -609,7 +610,7 @@ function selectBuilding(buildingId) {
 		</strong>
 
 		{
-		roomDetails.office_hours ??
+		roomDetails?.office_hours ??
 		"No schedule available"
 		}
 
