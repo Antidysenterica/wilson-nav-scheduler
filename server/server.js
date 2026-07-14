@@ -10,13 +10,20 @@ app.use(express.json());
 
 // Routes
 const authRoutes = require("./routes/auth");
+const buildingRoutes = require("./routes/buildings");
+const floorRoutes = require("./routes/floors");
+const roomRoutes = require("./routes/rooms");
 const appointmentRoutes = require("./routes/appointment");
 const timeSlotRoutes = require("./routes/timeslot");
 
 // API Endpoints
 app.use("/api/auth", authRoutes);
+app.use("/api/buildings", buildingRoutes);
+app.use("/api/floors", floorRoutes);
+app.use("/api/rooms", roomRoutes);
 app.use("/api/appointments", appointmentRoutes);
 app.use("/api/timeslots", timeSlotRoutes);
+
 
 // Test Route
 app.get("/", (req, res) => {
