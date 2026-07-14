@@ -2111,3 +2111,40 @@ button.action-row {
     grid-template-columns: 1fr;
   }
 }
+
+.room-list{
+    margin-top:20px;
+}
+
+
+.room-item{
+
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    margin-bottom:8px;
+
+    cursor:pointer;
+
+}
+
+
+.room-item strong{
+    display:block;
+}
+
+
+.room-item span{
+    font-size:12px;
+}
+
+
+.room-item small{
+    opacity:.7;
+}
