@@ -82,9 +82,9 @@ const buildings = [
     rotate: 8
   },
   {
-    id: "science",
-    name: "Science Center",
-    code: "SC",
+    id: "bonoan",
+    name: "Bonoan Building",
+    code: "BB",
     floors: 4,
     rooms: 64,
     occupancy: "Limited",
@@ -134,7 +134,7 @@ const floorData = {
     { label: "Floor 4", status: "Media", available: 5 },
     { label: "Floor 5", status: "Research", available: 3 }
   ],
-  science: [
+  bonoan: [
     { label: "Floor 1", status: "Chemistry", available: 3 },
     { label: "Floor 2", status: "Biology", available: 5 },
     { label: "Floor 3", status: "Physics", available: 4 },
@@ -405,13 +405,13 @@ function Map() {
                 className="icon-button"
                 type="button"
                 aria-label="Zoom out"
-                onClick={() => setZoom((value) => Math.max(value - 0.08, 0.86))}
+                disabled={zoom <= 1.0}  // Disable when at or below default
+                onClick={() => setZoom((value) => Math.max(value - 0.08, 1.0))}
               >
                 <ZoomOut size={18} aria-hidden="true" />
               </button>
             </div>
           </section>
-
           <aside className="building-panel" aria-label="Building preview">
             <div className="panel-header">
               <span>Building Preview</span>
@@ -425,10 +425,10 @@ function Map() {
                   Floors: {selectedBuilding.floors} <span>{selectedBuilding.rooms} rooms</span>
                 </p>
 
-                <button className="wide-button" type="button">
-                  <Layers3 size={17} aria-hidden="true" />
-                  <span>Open floors</span>
-                </button>
+                {/* REMOVED: <button className="wide-button" type="button"> */}
+                {/*   <Layers3 size={17} aria-hidden="true" /> */}
+                {/*   <span>Open floors</span> */}
+                {/* </button> */}
 
                 <div className="floor-tabs" aria-label="Floors">
                   {floors.map((floor, index) => (
@@ -450,15 +450,6 @@ function Map() {
                     <small>{floors[activeFloor].available} rooms available</small>
                   </div>
                 )}
-
-                <div className="route-card">
-                  <Navigation size={18} aria-hidden="true" />
-                  <div>
-                    <span>Next step</span>
-                    <strong>Courtyard route</strong>
-                  </div>
-                  <ChevronRight size={18} aria-hidden="true" />
-                </div>
               </>
             ) : (
               <p className="title-helper">Click a building on the map to see its details.</p>
@@ -525,7 +516,7 @@ function CampusCanvas({ buildings: campusBuildings, selectedId, onSelectBuilding
           <p>PH - Phelan Hall</p>
           <p>XH - Xavier Hall</p>
           <p>UL - Library</p>
-          <p>SC - Science Center</p>
+          <p>BB - Bonoan Building</p>
         </div>
       </div>
     </div>
