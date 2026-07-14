@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 // Landing Page
 import LandingPage from "./pages/LandingPage";
@@ -24,7 +25,14 @@ function App() {
       <Route path="/about" element={<About />} />
       <Route path="/appointment" element={<Appointment />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/manage-appointment" element={<ManageAppointment />} />
+      <Route
+	path="/manage-appointment"
+	element={
+	<ProtectedRoute permission="FACULTY_STAFF">
+	    <ManageAppointment/>
+	</ProtectedRoute>
+	}
+      />
       <Route path="/map" element={<Map />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/time-slot-edit" element={<TimeSlotEdit />} />
