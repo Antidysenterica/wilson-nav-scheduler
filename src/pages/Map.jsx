@@ -1,15 +1,18 @@
 import React, { useMemo, useState } from "react";
 import "../styles/Layout.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DocumentTitle from "../hooks/DocumentTitle";
-
+import { canAccess, getCurrentUser } from "../utils/permissions";
+import { logout } from "../utils/auth";
 import {
+  ArrowLeft,
   Bell,
   Building2,
   CalendarCheck,
   ChevronRight,
   DoorOpen,
   Layers3,
+  LogOut,
   MapPinned,
   Navigation,
   Search,
@@ -20,14 +23,6 @@ import {
   ZoomOut
 } from "lucide-react";
 import campusLogo from "../assets/logo-icon.png";
-
-const navItems = [
-  { label: "Map", icon: MapPinned, path: "/map" },
-  { label: "Rooms", icon: DoorOpen, path: "/map" },
-  { label: "Appointments", icon: CalendarCheck, path: "/appointment" },
-  { label: "Manage", icon: Settings2, path: "/manage-appointment" },
-  { label: "Account", icon: UserRound, path: "/profile" }
-];
 
 const buildings = [
   {
@@ -158,17 +153,32 @@ const campusStats = [
   { label: "Appointments", value: "18" }
 ];
 
+const ROLE_NAMES = {
+  1: "Guest",
+  2: "College Student",
+  3: "Graduate Student",
+  4: "Faculty",
+  5: "Staff",
+  6: "Admin"
+};
+
 function Map() {
   DocumentTitle("Campus Map");
+  const navigate = useNavigate();
 
   const [activeNav, setActiveNav] = useState("Map");
-  const [selectedId, setSelectedId] = useState("phelan");
+  const [selectedId, setSelectedId] = useState(null);
   const [query, setQuery] = useState("");
   const [zoom, setZoom] = useState(1);
   const [activeFloor, setActiveFloor] = useState(0);
 
-  const selectedBuilding = buildings.find((building) => building.id === selectedId) ?? buildings[0];
-  const floors = floorData[selectedBuilding.id] ?? [];
+  const user = getCurrentUser();
+  const isLoggedIn = user !== null;
+  const isFacultyStaff = canAccess("FACULTY_STAFF");
+  const buildingSelected = selectedId !== null;
+
+  const selectedBuilding = buildings.find((building) => building.id === selectedId) ?? null;
+  const floors = selectedBuilding ? floorData[selectedBuilding.id] ?? [] : [];
 
   const searchResults = useMemo(() => {
     const cleanQuery = query.trim().toLowerCase();
@@ -181,6 +191,60 @@ function Map() {
       );
     });
   }, [query]);
+
+  // Nav items assembled based on login state + role
+  const navItems = useMemo(() => {
+
+	    const items = [
+	      {
+		label:"Map",
+		icon:MapPinned,
+		path:"/map"
+	      }
+	    ];
+
+
+	    // Only show rooms after selecting building
+	    if(buildingSelected){
+		items.push({
+		    label:"Rooms",
+		    icon:DoorOpen,
+		    path:"/map"
+		});
+	    }
+
+
+	    // Logged users
+	    if(isLoggedIn){
+
+		items.push({
+		    label:"Account",
+		    icon:UserRound,
+		    path:"/profile"
+		});
+
+
+		// Faculty, Staff, Admin
+		if(isFacultyStaff){
+
+		    items.push({
+		        label:"Manage",
+		        icon:Settings2,
+		        path:"/manage-appointment"
+		    });
+
+		}
+
+	    }
+
+
+	    return items;
+
+	},[
+	    buildingSelected,
+	    isLoggedIn,
+	    isFacultyStaff
+  ]);
 
   function selectBuilding(buildingId) {
     setSelectedId(buildingId);
@@ -195,6 +259,16 @@ function Map() {
     }
   }
 
+  function handleLogout() {
+
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+
+    navigate("/");
+
+    window.location.reload();
+  }
+
   return (
     <main className="app-shell">
       <aside className="sidebar" aria-label="Main navigation">
@@ -204,8 +278,6 @@ function Map() {
         </a>
 
         <nav className="nav-list">
-          {/*yk if you so happen to read this and not automate this using AI can you please fix the </Link> that should redirect you to the page instead of just display, thank you very much.*/}
-          {/*Update: forgot import link for react-dom*/}
           {navItems.map((item) => {
             const Icon = item.icon;
             return (
@@ -220,13 +292,26 @@ function Map() {
               </Link>
             );
           })}
+
+          {isLoggedIn ? (
+            <button
+		type="button"
+		className="nav-item nav-item-button"
+		onClick={logout}
+		>
+		    <LogOut size={18}/>
+		    <span>Log Out</span>
+		</button>
+          ) : (
+            <Link to="/" className="nav-item" onClick={() => setActiveNav("Go back")}>
+              <ArrowLeft size={18} aria-hidden="true" />
+              <span>Go back</span>
+            </Link>
+          )}
         </nav>
 
         <div className="user-strip">
-          <span>Guest</span>
-          <span>Student</span>
-          <span>Faculty</span>
-          <span>Staff</span>
+          <span>{isLoggedIn ? ROLE_NAMES[user.role_id] ?? "Account" : "Not logged in"}</span>
         </div>
       </aside>
 
@@ -302,7 +387,7 @@ function Map() {
           <section className="map-section" aria-label="Interactive campus area">
             <CampusCanvas
               buildings={buildings}
-              selectedId={selectedBuilding.id}
+              selectedId={selectedId}
               onSelectBuilding={selectBuilding}
               zoom={zoom}
             />
@@ -332,45 +417,52 @@ function Map() {
               <span>Building Preview</span>
               <Building2 size={18} aria-hidden="true" />
             </div>
-            <h2>{selectedBuilding.name}</h2>
-            <p>
-              Floors: {selectedBuilding.floors} <span>{selectedBuilding.rooms} rooms</span>
-            </p>
 
-            <button className="wide-button" type="button">
-              <Layers3 size={17} aria-hidden="true" />
-              <span>Open floors</span>
-            </button>
+            {selectedBuilding ? (
+              <>
+                <h2>{selectedBuilding.name}</h2>
+                <p>
+                  Floors: {selectedBuilding.floors} <span>{selectedBuilding.rooms} rooms</span>
+                </p>
 
-            <div className="floor-tabs" aria-label="Floors">
-              {floors.map((floor, index) => (
-                <button
-                  key={floor.label}
-                  className={activeFloor === index ? "is-active" : ""}
-                  type="button"
-                  onClick={() => setActiveFloor(index)}
-                >
-                  {index + 1}
+                <button className="wide-button" type="button">
+                  <Layers3 size={17} aria-hidden="true" />
+                  <span>Open floors</span>
                 </button>
-              ))}
-            </div>
 
-            {floors[activeFloor] && (
-              <div className="floor-card">
-                <span>{floors[activeFloor].label}</span>
-                <strong>{floors[activeFloor].status}</strong>
-                <small>{floors[activeFloor].available} rooms available</small>
-              </div>
+                <div className="floor-tabs" aria-label="Floors">
+                  {floors.map((floor, index) => (
+                    <button
+                      key={floor.label}
+                      className={activeFloor === index ? "is-active" : ""}
+                      type="button"
+                      onClick={() => setActiveFloor(index)}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
+                </div>
+
+                {floors[activeFloor] && (
+                  <div className="floor-card">
+                    <span>{floors[activeFloor].label}</span>
+                    <strong>{floors[activeFloor].status}</strong>
+                    <small>{floors[activeFloor].available} rooms available</small>
+                  </div>
+                )}
+
+                <div className="route-card">
+                  <Navigation size={18} aria-hidden="true" />
+                  <div>
+                    <span>Next step</span>
+                    <strong>Courtyard route</strong>
+                  </div>
+                  <ChevronRight size={18} aria-hidden="true" />
+                </div>
+              </>
+            ) : (
+              <p className="title-helper">Click a building on the map to see its details.</p>
             )}
-
-            <div className="route-card">
-              <Navigation size={18} aria-hidden="true" />
-              <div>
-                <span>Next step</span>
-                <strong>Courtyard route</strong>
-              </div>
-              <ChevronRight size={18} aria-hidden="true" />
-            </div>
           </aside>
         </div>
       </section>

@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Calendar from "../components/Calendar";
 import TimeSlotSelection from "../components/TimeSlotSelection";
 import "../styles/Layout.css";
 import DocumentTitle from "../hooks/DocumentTitle";
+import { canAccess, getCurrentUser } from "../utils/permissions";
+import { logout } from "../utils/auth";
 
 import {
   Bell,
-  CalendarCheck,
   CheckCircle2,
-  DoorOpen,
+  LogOut,
   MapPinned,
   Settings2,
   SlidersHorizontal,
@@ -17,19 +18,43 @@ import {
 } from "lucide-react";
 import campusLogo from "../assets/logo-icon.png";
 
-const navItems = [
-  { label: "Map", icon: MapPinned, path: "/map" },
-  { label: "Rooms", icon: DoorOpen, path: "/map" },
-  { label: "Appointments", icon: CalendarCheck, path: "/appointment" },
-  { label: "Manage", icon: Settings2, path: "/manage-appointment" },
-  { label: "Account", icon: UserRound, path: "/profile" },
-];
+const ROLE_NAMES = {
+  1: "Guest",
+  2: "College Student",
+  3: "Graduate Student",
+  4: "Faculty",
+  5: "Staff",
+  6: "Admin",
+};
 
 function Appointment() {
   DocumentTitle("Schedule Appointments");
 
   const [selectedDate, setSelectedDate] = useState(null);
   const [lastRequest, setLastRequest] = useState(null);
+
+  const user = getCurrentUser();
+  const isLoggedIn = user !== null;
+  const isFacultyStaff = canAccess("FACULTY_STAFF");
+
+  // Scheduling an appointment requires an account. If reached without one,
+  // fall back to a minimal nav (Map + Log Out).
+  const navItems = useMemo(() => {
+    if (!isLoggedIn) {
+      return [{ label: "Map", icon: MapPinned, path: "/map" }];
+    }
+
+    const items = [
+      { label: "Map", icon: MapPinned, path: "/map" },
+      { label: "Account", icon: UserRound, path: "/profile" },
+    ];
+
+    if (isFacultyStaff) {
+      items.push({ label: "Manage", icon: Settings2, path: "/manage-appointment" });
+    }
+
+    return items;
+  }, [isLoggedIn, isFacultyStaff]);
 
   return (
     <main className="app-shell">
@@ -43,23 +68,21 @@ function Appointment() {
           {navItems.map((item) => {
             const Icon = item.icon;
             return (
-              <Link
-                key={item.label}
-                to={item.path}
-                className={`nav-item ${item.label === "Appointments" ? "is-active" : ""}`}
-              >
+              <Link key={item.label} to={item.path} className="nav-item">
                 <Icon size={18} aria-hidden="true" />
                 <span>{item.label}</span>
               </Link>
             );
           })}
+
+          <button type="button" className="nav-item nav-item-button" onClick={logout}>
+            <LogOut size={18} aria-hidden="true" />
+            <span>Log Out</span>
+          </button>
         </nav>
 
         <div className="user-strip">
-          <span>Guest</span>
-          <span>Student</span>
-          <span>Faculty</span>
-          <span>Staff</span>
+          <span>{isLoggedIn ? ROLE_NAMES[user.role_id] ?? "Account" : "Not logged in"}</span>
         </div>
       </aside>
 
@@ -125,10 +148,12 @@ function Appointment() {
           </section>
         )}
 
-        <div className="workflow-links">
-          <Link to="/manage-appointment">Approve Appointment</Link>
-          <Link to="/time-slot-edit">Edit Available Time Slot</Link>
-        </div>
+        {isFacultyStaff && (
+          <div className="workflow-links">
+            <Link to="/manage-appointment">Approve Appointment</Link>
+            <Link to="/time-slot-edit">Edit Available Time Slot</Link>
+          </div>
+        )}
       </section>
     </main>
   );

@@ -5,11 +5,12 @@ import FacultyAppointments from "../components/FacultyAppointments";
 import { initialRequests } from "../data/requests";
 import "../styles/Layout.css";
 import DocumentTitle from "../hooks/DocumentTitle";
+import { canAccess, getCurrentUser } from "../utils/permissions";
+import { logout } from "../utils/auth";
 
 import {
   Bell,
-  CalendarCheck,
-  DoorOpen,
+  LogOut,
   MapPinned,
   Settings2,
   SlidersHorizontal,
@@ -17,19 +18,43 @@ import {
 } from "lucide-react";
 import campusLogo from "../assets/logo-icon.png";
 
-const navItems = [
-  { label: "Map", icon: MapPinned, path: "/map" },
-  { label: "Rooms", icon: DoorOpen, path: "/map" },
-  { label: "Appointments", icon: CalendarCheck, path: "/appointment" },
-  { label: "Manage", icon: Settings2, path: "/manage-appointment" },
-  { label: "Account", icon: UserRound, path: "/profile" },
-];
+const ROLE_NAMES = {
+  1: "Guest",
+  2: "College Student",
+  3: "Graduate Student",
+  4: "Faculty",
+  5: "Staff",
+  6: "Admin",
+};
 
 function ManageAppointment() {
   DocumentTitle("Appointment Requests");
 
   const [requests, setRequests] = useState(initialRequests);
   const [selectedRequestId, setSelectedRequestId] = useState(initialRequests[0]?.id);
+
+  const user = getCurrentUser();
+  const isLoggedIn = user !== null;
+  const isFacultyStaff = canAccess("FACULTY_STAFF");
+
+  // This page is Faculty/Staff/Admin only. If reached without an account,
+  // fall back to a minimal nav (Map + Log Out).
+  const navItems = useMemo(() => {
+    if (!isLoggedIn) {
+      return [{ label: "Map", icon: MapPinned, path: "/map" }];
+    }
+
+    const items = [
+      { label: "Map", icon: MapPinned, path: "/map" },
+      { label: "Account", icon: UserRound, path: "/profile" },
+    ];
+
+    if (isFacultyStaff) {
+      items.push({ label: "Manage", icon: Settings2, path: "/manage-appointment" });
+    }
+
+    return items;
+  }, [isLoggedIn, isFacultyStaff]);
 
   const selectedRequest = requests.find((request) => request.id === selectedRequestId);
 
@@ -79,13 +104,15 @@ function ManageAppointment() {
               </Link>
             );
           })}
+
+          <button type="button" className="nav-item nav-item-button" onClick={logout}>
+            <LogOut size={18} aria-hidden="true" />
+            <span>Log Out</span>
+          </button>
         </nav>
 
         <div className="user-strip">
-          <span>Guest</span>
-          <span>Student</span>
-          <span>Faculty</span>
-          <span>Staff</span>
+          <span>{isLoggedIn ? ROLE_NAMES[user.role_id] ?? "Account" : "Not logged in"}</span>
         </div>
       </aside>
 
@@ -138,6 +165,10 @@ function ManageAppointment() {
             request={selectedRequest}
             onDecision={handleDecision}
           />
+        </div>
+
+        <div className="workflow-links">
+          <Link to="/time-slot-edit">Edit Available Time Slot</Link>
         </div>
       </section>
     </main>
