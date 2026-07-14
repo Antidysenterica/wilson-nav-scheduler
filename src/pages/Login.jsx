@@ -6,7 +6,7 @@ import "../styles/Login.css";
 import logoPath from "../assets/logo-icon.png";
 
 // might be changed to the actual deployed URL, if it shows a localhost then revert it to the website URL
-const API_BASE_URL = "http://localhost:5000";
+const API_BASE_URL = "https://wilson-nav-backend.onrender.com";
 
 const accountTypes = [
   "Guest",
