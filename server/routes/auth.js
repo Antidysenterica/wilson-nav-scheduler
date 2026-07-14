@@ -65,20 +65,23 @@ router.post("/register", async (req, res) => {
               id_number || null,
               role_id,
             ],
-            (err) => {
-  if (err) {
-    console.log(err);
+            (err, result) => {
+      if (err) {
+        console.log(err);
 
-    return res.status(500).json({
-      message: err.sqlMessage || err.message,
-      error: err,
-    });
-  }
+        return res.status(500).json({
+          message: err.sqlMessage || err.message,
+          error: err,
+        });
+      }
 
-  return res.status(201).json({
-    message: "Registration Successful!",
-  });
-}
+      console.log("INSERT RESULT:", result);
+
+      return res.status(201).json({
+        message: "Registration Successful!",
+        insertId: result.insertId
+      });
+    }
           );
         } catch (error) {
           console.log(error);
