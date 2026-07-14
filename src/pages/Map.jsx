@@ -94,7 +94,9 @@ function Map() {
   
   const [loadingBuildings,setLoadingBuildings]=useState(true);
   const [roomCount, setRoomCount] = useState(0);
-  const [selectedRoom, setSelectedRoom] = useState(null);
+  const [selectedRoomId, setSelectedRoomId] = useState(null);
+  const [roomDetails, setRoomDetails] = useState(null);
+  
 
 
 useEffect(() => {
@@ -140,19 +142,34 @@ useEffect(() => {
 
 }, []);
 
-	useEffect(() => {
+useEffect(() => {
 
-	  if(!selectedId){
-	      setFloors([]);
-	      return;
-	  }
+	if(!selectedId){
+	    return;
+	}
 
-	  getFloors(selectedId)
-	  .then((res)=>{
-	      setFloors(res.data);
-	  });
 
-	},[selectedId]);
+	async function loadFloors(){
+
+	try{
+
+	const res = await getFloors(selectedId);
+
+	setFloors(res.data);
+
+	}catch(error){
+
+	console.log(error);
+
+	}
+
+	}
+
+
+	loadFloors();
+
+
+},[selectedId]);
 	
 useEffect(()=>{
 
@@ -225,15 +242,15 @@ useEffect(()=>{
 
 useEffect(()=>{
 
-    if(!selectedRoom){
+    if(!selectedRoomId){
         return;
     }
 
 
-    getRoomDetails(selectedRoom.room_id)
+    getRoomDetails(selectedRoomId)
     .then((res)=>{
 
-        setSelectedRoom(res.data);
+        setRoomDetails(res.data);
 
     })
     .catch((error)=>{
@@ -241,7 +258,7 @@ useEffect(()=>{
     });
 
 
-},[selectedRoom]);
+},[selectedRoomId]);
 
   const searchResults = useMemo(() => {
     const cleanQuery = query.trim().toLowerCase();
@@ -310,11 +327,14 @@ useEffect(()=>{
 	    isFacultyStaff
   ]);
 
-  function selectBuilding(buildingId) {
+function selectBuilding(buildingId) {
       setSelectedId(buildingId);
       setFloors([]);
+      setRooms([]);
+      setRoomDetails(null);
       setActiveFloor(0);
-  }
+
+}
 
   function handleSearchSubmit(event) {
 
@@ -555,7 +575,7 @@ useEffect(()=>{
 
 
 		<h2>
-		{selectedRoom.room_name}
+		{roomDetails.room_name}
 		</h2>
 
 
@@ -563,7 +583,7 @@ useEffect(()=>{
 		<strong>
 		Code:
 		</strong>
-		{selectedRoom.room_code}
+		{roomDetails.room_code}
 		</p>
 
 
@@ -571,7 +591,7 @@ useEffect(()=>{
 		<strong>
 		Type:
 		</strong>
-		{selectedRoom.room_type}
+		{roomDetails.room_type}
 		</p>
 
 
@@ -579,7 +599,7 @@ useEffect(()=>{
 		<strong>
 		Status:
 		</strong>
-		{selectedRoom.room_status}
+		{roomDetails.room_status}
 		</p>
 
 
@@ -589,7 +609,7 @@ useEffect(()=>{
 		</strong>
 
 		{
-		selectedRoom.office_hours ??
+		roomDetails.office_hours ??
 		"No schedule available"
 		}
 
@@ -615,7 +635,7 @@ useEffect(()=>{
 		key={room.room_id}
 		className="room-item"
 		type="button"
-		onClick={() => setSelectedRoom(room)}
+		onClick={() => setSelectedRoomId(room.room_id)}
 		>
 
 		<div>
