@@ -1,7 +1,7 @@
-onClick={() => {
+import axios from "axios";
 
-    setSelectedRoom({
-        room_id: room.room_id
-    });
+const API = axios.create({
+    baseURL:"http://localhost:5000/api"
+});
 
-}}
+export default API;
