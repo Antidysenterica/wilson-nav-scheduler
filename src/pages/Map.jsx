@@ -537,11 +537,12 @@ function selectBuilding(buildingId) {
 			className={activeFloor===index ? "is-active":""}
 			onClick={()=>{
 
-			    setActiveFloor(index);
-			    setRooms([]);
-			    setSelectedRoom(null);
-
-			}}
+		    setActiveFloor(index);
+		    setRooms([]);
+		    setRoomDetails(null);
+		    setSelectedRoomId(null);
+		
+		}}
 			>
 			{floor.floor_number}
 			</button>
